@@ -1,0 +1,114 @@
+<html>
+<body>
+<pre>
+<h1>�Vision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.24.2.0
+Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: A Mr_Boring, A, LIC=QF82M-X4XIW-GK0BG-V9SHK-GQ96L-TV0C1
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.24.1
+Toolchain Path:  F:\KEIL_5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 5 (build 528)
+Assembler:       Armasm.exe V5.06 update 5 (build 528)
+Linker/Locator:  ArmLink.exe V5.06 update 5 (build 528)
+Library Manager: ArmAr.exe V5.06 update 5 (build 528)
+Hex Converter:   FromElf.exe V5.06 update 5 (build 528)
+CPU DLL:         SARMCM3.DLL V5.24.1
+Dialog DLL:      DCM.DLL V1.16.0.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.1.0
+Dialog DLL:      TCM.DLL V1.32.0.0
+ 
+<h2>Project:</h2>
+E:\dask\移动物体抓取下位机5\USER\PWM.uvproj
+Project File Date:  02/23/2024
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'F:\KEIL_5\ARM\ARMCC\Bin'
+Build target 'control'
+assembling startup_stm32f40_41xxx.s...
+compiling main.c...
+compiling misc.c...
+compiling stm32f4xx_it.c...
+compiling usart.c...
+compiling sys.c...
+compiling led.c...
+compiling myflash.c...
+..\SYSTEM\myflash\myflash.c(31): warning:  #1-D: last line of file ends without a newline
+  }
+..\SYSTEM\myflash\myflash.c: 1 warning, 0 errors
+compiling stm32f4xx_gpio.c...
+compiling ThreeDof.c...
+..\HARDWARE\THREEDOF\ThreeDof.c(32): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_8,0);
+..\HARDWARE\THREEDOF\ThreeDof.c(33): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_9,0);
+..\HARDWARE\THREEDOF\ThreeDof.c(34): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_10,1);
+..\HARDWARE\THREEDOF\ThreeDof.c(35): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_11,1);
+..\HARDWARE\THREEDOF\ThreeDof.c(36): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_12,0);
+..\HARDWARE\THREEDOF\ThreeDof.c(37): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_7,1);
+..\HARDWARE\THREEDOF\ThreeDof.c(159): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_8,turn1);
+..\HARDWARE\THREEDOF\ThreeDof.c(160): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_9,turn2);
+..\HARDWARE\THREEDOF\ThreeDof.c(161): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_10,turn3);
+..\HARDWARE\THREEDOF\ThreeDof.c(162): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_11,turn4);
+..\HARDWARE\THREEDOF\ThreeDof.c(163): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_12,turn5);
+..\HARDWARE\THREEDOF\ThreeDof.c(164): warning:  #188-D: enumerated type mixed with another type
+  	GPIO_WriteBit(
+PIOD,
+PIO_Pin_7,turn6);
+..\HARDWARE\THREEDOF\ThreeDof.c(203): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
+  		Serial_SendArray(SEND_ARRAY, 1);
+..\HARDWARE\THREEDOF\ThreeDof.c: 13 warnings, 0 errors
+compiling stm32f4xx_usart.c...
+compiling system_stm32f4xx.c...
+compiling key.c...
+..\HARDWARE\KEY\key.c(70): warning:  #1-D: last line of file ends without a newline
+  } 
+..\HARDWARE\KEY\key.c: 1 warning, 0 errors
+compiling delay.c...
+compiling stm32f4xx_syscfg.c...
+compiling stm32f4xx_exti.c...
+compiling stm32f4xx_tim.c...
+compiling stm32f4xx_rcc.c...
+compiling stm32f4xx_flash_ramfunc.c...
+compiling stm32f4xx_flash.c...
+linking...
+Program Size: Code=10480 RO-data=424 RW-data=64 ZI-data=1072  
+FromELF: creating hex file...
+"..\OBJ\PWM.axf" - 0 Error(s), 15 Warning(s).
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
