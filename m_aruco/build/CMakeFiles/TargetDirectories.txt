@@ -1,0 +1,3 @@
+/home/ni/m_aruco/build/CMakeFiles/rebuild_cache.dir
+/home/ni/m_aruco/build/CMakeFiles/edit_cache.dir
+/home/ni/m_aruco/build/CMakeFiles/cam_pose_estimator.dir
