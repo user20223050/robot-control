@@ -72,7 +72,6 @@ void Slave_Copmputer::calculate_pulse(Robot &robot)
     pulse5 = 65535;
     if(pulse6 == 0 || pulse6 > 65535)
     pulse6 = 65535;
-  // std::cout<<robot.Joint_1_speed<<std::endl;
 }
 
 void Slave_Copmputer::joint_rotate_direction(Robot &robot)
@@ -100,6 +99,10 @@ void Slave_Copmputer::joint_rotate_direction(Robot &robot)
             Joint3_rotate_direction = 1;
         if((round(robot.Joint_3_angle_R * 10000) / 10000) - (round(joint_3_angle_old * 10000) / 10000) < 0)
             Joint3_rotate_direction = 0;
+        if((round(robot.Joint_4_angle_R * 10000) / 10000) - (round(joint_4_angle_old * 10000) / 10000) > 0)
+            Joint4_rotate_direction = 1;
+        if((round(robot.Joint_4_angle_R * 10000) / 10000) - (round(joint_4_angle_old * 10000) / 10000) < 0)
+            Joint4_rotate_direction = 0;
         if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) > 0)
             Joint5_rotate_direction = 1;
         if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) < 0)
@@ -148,6 +151,15 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     else
     buffer3[3] = 0x00;
 
+    Low_Byte = pulse4&0xff;
+    High_Byte = (pulse4>>8)&0xff;
+    buffer4[1] = (static_cast<int>(Low_Byte));
+    buffer4[2] = (static_cast<int>(High_Byte));
+    if(Joint4_rotate_direction == 1)
+    buffer4[3] = 0x01;
+    else
+    buffer4[3] = 0x00;
+
     Low_Byte = pulse5&0xff;
     High_Byte = (pulse5>>8)&0xff;
     buffer5[1] = (static_cast<int>(Low_Byte));
@@ -175,9 +187,10 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
     mpc.Calculate_Out_Y(u_y,robot,*this);
     mpc.Calculate_Out_Z(u_z,robot,*this);
 
+    mpc.Calculate_Out_ZA(u_za,robot);
     mpc.Calculate_Out_XA(u_xa,robot);
     mpc.Calculate_Out_YA(u_ya,robot);
-    mpc.Calculate_Out_ZA(u_za,robot);
+
 
 //    if(Work_sign == 0){
 //        if(robot.X_tool_point_R>300 || robot.X_tool_point_R<-5 || robot.Y_tool_point_R<-250 || robot.Y_tool_point_R>250 || robot.Z_tool_point_R>300 || robot.Z_tool_point_R<-100){
@@ -202,11 +215,10 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
     serialPort->write(buffer4);
     serialPort->write(buffer5);
     serialPort->write(buffer6);
-    std::cout<<"pulse1 = "<<pulse1<<std::endl;
-    std::cout<<"pulse2 = "<<pulse2<<std::endl;
-    std::cout<<"pulse3 = "<<pulse3<<std::endl;
-    std::cout<<"pulse5 = "<<pulse5<<std::endl;
-
+//    std::cout<<"pulse1 = "<<pulse1<<std::endl;
+//    std::cout<<"pulse2 = "<<pulse2<<std::endl;
+//    std::cout<<"pulse3 = "<<pulse3<<std::endl;
+//    std::cout<<"pulse5 = "<<pulse5<<std::endl;
 }
 
 void Slave_Copmputer::Work_position_set(Robot &robot)

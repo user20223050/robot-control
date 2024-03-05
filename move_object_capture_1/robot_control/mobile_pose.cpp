@@ -7,8 +7,8 @@ mobile_pose::mobile_pose():object(4,4),Tc_c(4,4),Tc_0(4,4)
 //              0,     0,     1,    0,
 //              0,     0,     0,    1;
     object << 0,     0,     1,  400,
+             -1,     0,     0,    0,
               0,    -1,     0,    0,
-              1,     0,     0,    0,
               0,     0,     0,    1;
     Tc_0   << 0,     0,    -1,  1000,
               1,     0,     0,    0,
@@ -53,6 +53,7 @@ void mobile_pose::conversion_coord()
     if(round(Y_angle_target*180/M_PI*1)/1 == -90){
         Z_angle_target = 0;
         X_angle_target = -atan2(T6_0(0,1),T6_0(1,1));
+        std::cout<<"111111"<<std::endl;
     }
     else {
         Z_angle_target = atan2(T6_0(1,0)/cos(Y_angle_target),T6_0(0,0)/cos(Y_angle_target));
@@ -61,6 +62,9 @@ void mobile_pose::conversion_coord()
     X_point_target = T6_0(0,3);
     Y_point_target = T6_0(1,3);
     Z_point_target = T6_0(2,3);
+    std::cout<<"X_angle_target"<<X_angle_target<<std::endl;
+    std::cout<<"Y_angle_target"<<Y_angle_target<<std::endl;
+    std::cout<<"Z_angle_target"<<Z_angle_target<<std::endl;
 }
 
 void mobile_pose::reflash_target()

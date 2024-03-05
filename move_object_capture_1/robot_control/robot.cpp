@@ -206,24 +206,6 @@ void Robot::FK()
     FA_X_tool_dangle_R_old = FA_X_tool_dangle_R;
     FA_Y_tool_dangle_R_old = FA_Y_tool_dangle_R;
     FA_Z_tool_dangle_R_old = FA_Z_tool_dangle_R;
-//    X_point_R = round(P4_0(0,0) * 1) / 1;
-//    Y_point_R = round(P4_0(1,0) * 1) / 1;
-//    Z_point_R = round(P4_0(2,0) * 1) / 1;
-//    X_Spoint_R = round(X_Spoint_R * 1) / 1;
-//    Y_Spoint_R = round(Y_Spoint_R * 1) / 1;
-//    Z_Spoint_R = round(Z_Spoint_R * 1) / 1;
-//    X_dSpoint_R = round(X_dSpoint_R * 1) / 1;
-//    Y_dSpoint_R = round(Y_dSpoint_R * 1) / 1;
-//    Z_dSpoint_R = round(Z_dSpoint_R * 1) / 1;
-//    std::cout<<"X_point_R = "<<X_point_R<<std::endl;
-//    std::cout<<"X_Spoint_R = "<<X_Spoint_R<<std::endl;
-//    std::cout<<"X_dSpoint_R = "<<X_dSpoint_R<<std::endl;
-//    std::cout<<"Y_point_R = "<<Y_point_R<<std::endl;
-//    std::cout<<"Y_Spoint_R = "<<Y_Spoint_R<<std::endl;
-//    std::cout<<"Y_dSpoint_R = "<<Y_dSpoint_R<<std::endl;
-//    std::cout<<"Z_point_R = "<<Z_point_R<<std::endl;
-//    std::cout<<"Z_Spoint_R = "<<Z_Spoint_R<<std::endl;
-//    std::cout<<"Z_dSpoint_R = "<<Z_dSpoint_R<<std::endl;
 }
 
 void Robot::Fixed_angle_calculate()
@@ -245,6 +227,7 @@ void Robot::Fixed_angle_calculate()
 
 void Robot::Fixed_angle_invcalculate()
 {
+    static uint8_t i = 0;
     FA_Y_tool_angle_R = atan2(-Tt_0_R(2,0),sqrt(pow(Tt_0_R(0,0),2) + pow(Tt_0_R(1,0),2)));
     if(round(FA_Y_tool_angle_R*180/M_PI*1)/1 == 90) {
         FA_Z_tool_angle_R = 0;
@@ -253,10 +236,14 @@ void Robot::Fixed_angle_invcalculate()
     if(round(FA_Y_tool_angle_R*180/M_PI*1)/1 == -90) {
         FA_Z_tool_angle_R = 0;
         FA_X_tool_angle_R = -atan2(Tt_0_R(0,1),Tt_0_R(1,1));
+        i++;
     }
     else {
         FA_Z_tool_angle_R = atan2(Tt_0_R(1,0)/cos(FA_Y_tool_angle_R),Tt_0_R(0,0)/cos(FA_Y_tool_angle_R));
         FA_X_tool_angle_R = atan2(Tt_0_R(2,1)/cos(FA_Y_tool_angle_R),Tt_0_R(2,2)/cos(FA_Y_tool_angle_R));
+    }
+    for(uint8_t j = 0;j < i; j++) {
+        std::cout<<"222222"<<std::endl;
     }
     std::cout<<"XA = "<<FA_X_tool_angle_R<<std::endl;
     std::cout<<"YA = "<<FA_Y_tool_angle_R<<std::endl;
@@ -296,9 +283,6 @@ void Robot::get_joint_speed(void)
         Joint_6_speed_R = 6;
     if(Joint_6_speed_R < -6)
         Joint_6_speed_R = -6;
-//    std::cout<<Joint_1_speed<<std::endl;
-//    std::cout<<Joint_2_speed<<std::endl;
-//    std::cout<<Joint_3_speed<<std::endl;
 }
 
 void Robot::Back_Init_Position()
