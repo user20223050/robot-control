@@ -117,9 +117,9 @@ void MPC_Control::Refresh_Error(Robot &robot, mobile_pose &mobile)
      YA_Error(0,0) = round((mobile.Y_angle_target - robot.FA_Y_tool_angle_R)*180/M_PI*1)/1;
      YA_Error(1,0) = mobile.Y_dangle_target - robot.FA_Y_tool_dangle_R;
      YA_Error(2,0) = mobile.Y_ddangle_target - robot.FA_Y_tool_ddangle_R;
-//     ZA_Error(0,0) = round((mobile.Z_angle_target - robot.FA_Z_tool_angle_R)*180/M_PI*1)/1;
-//     ZA_Error(1,0) = mobile.Z_dangle_target - robot.FA_Z_tool_dangle_R;
-//     ZA_Error(2,0) = mobile.Z_ddangle_target - robot.FA_Z_tool_ddangle_R;
+     ZA_Error(0,0) = round((mobile.Z_angle_target - robot.FA_Z_tool_angle_R)*180/M_PI*1)/1;
+     ZA_Error(1,0) = mobile.Z_dangle_target - robot.FA_Z_tool_dangle_R;
+     ZA_Error(2,0) = mobile.Z_ddangle_target - robot.FA_Z_tool_ddangle_R;
 //     std::cout<<"x_error(0,0) = "<<x_error(0,0)<<std::endl;
 //     std::cout<<"x_error(1,0) = "<<x_error(1,0)<<std::endl;
 //     std::cout<<"x_error(2,0) = "<<x_error(2,0)<<std::endl;
@@ -234,6 +234,10 @@ void MPC_Control::Calculate_Out_XA(float U, Robot &robot)
         robot.FA_X_tool_dangle_C = LIMIT_DANGLE;
     if(robot.FA_X_tool_dangle_C < -LIMIT_DANGLE)
         robot.FA_X_tool_dangle_C = -LIMIT_DANGLE;
+    if(XA_Error[0] ==0) {
+        robot.FA_X_tool_dangle_C = 0;
+        robot.FA_X_tool_ddangle_C = 0;
+    }
     robot.FA_X_tool_angle_C = fmod((robot.FA_X_tool_angle_R + robot.FA_X_tool_dangle_C*0.05),2*M_PI);
     std::cout<<"FA_X_tool_angle_C ="<<robot.FA_X_tool_angle_C<<std::endl;
 }
@@ -250,8 +254,10 @@ void MPC_Control::Calculate_Out_YA(float U, Robot &robot)
         robot.FA_Y_tool_dangle_C = LIMIT_DANGLE;
     if(robot.FA_Y_tool_dangle_C < -LIMIT_DANGLE)
         robot.FA_Y_tool_dangle_C = -LIMIT_DANGLE;
-    if(YA_Error[0] ==0)
+    if(YA_Error[0] ==0) {
         robot.FA_Y_tool_dangle_C = 0;
+        robot.FA_Y_tool_ddangle_C = 0;
+    }
     robot.FA_Y_tool_angle_C = fmod((robot.FA_Y_tool_angle_R + robot.FA_Y_tool_dangle_C*0.05),2*M_PI);
     std::cout<<"FA_Y_tool_angle_C = "<<robot.FA_Y_tool_angle_C<<std::endl;
 }
@@ -268,6 +274,10 @@ void MPC_Control::Calculate_Out_ZA(float U, Robot &robot)
         robot.FA_Z_tool_dangle_C = LIMIT_DANGLE;
     if(robot.FA_Z_tool_dangle_C < -LIMIT_DANGLE)
         robot.FA_Z_tool_dangle_C = -LIMIT_DANGLE;
+    if(ZA_Error[0] ==0) {
+        robot.FA_Z_tool_dangle_C = 0;
+        robot.FA_Z_tool_ddangle_C = 0;
+    }
     robot.FA_Z_tool_angle_C = fmod((robot.FA_Z_tool_angle_R + robot.FA_Z_tool_dangle_C*0.05),2*M_PI);
     std::cout<<"FA_Z_tool_angle_C = "<<robot.FA_Z_tool_angle_C<<std::endl;
 }

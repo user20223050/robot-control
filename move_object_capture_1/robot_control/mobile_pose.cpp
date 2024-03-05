@@ -10,14 +10,14 @@ mobile_pose::mobile_pose():object(4,4),Tc_c(4,4),Tc_0(4,4)
               0,    -1,     0,    0,
               1,     0,     0,    0,
               0,     0,     0,    1;
-    Tc_0   << 0,     0,    -1,  800,
+    Tc_0   << 0,     0,    -1,  1000,
               1,     0,     0,    0,
-              0,    -1,     0,  500,
+              0,    -1,     0,  300,
               0,     0,     0,    1;
-    Tc_c   << 1,     0,     0,    0,
-              0, 0.866,   0.5,    0,
-              0,  -0.5, 0.866,    0,
-              0,     0,     0,    1;
+//    Tc_c   << 1,     0,     0,    0,
+//              0, 0.866,   0.5,    0,
+//              0,  -0.5, 0.866,    0,
+//              0,     0,     0,    1;
 }
 
 void mobile_pose::refresh_object()
@@ -25,7 +25,8 @@ void mobile_pose::refresh_object()
     Eigen::MatrixXd Tt_0(4,1);
     Eigen::MatrixXd Tt_c(4,1);
     Tt_c << *(p)*1000, *(p+1)*1000, *(p+2)*1000, 1;
-    Tt_0 = Tc_0*Tc_c*Tt_c;
+//    Tt_0 = Tc_0*Tc_c*Tt_c;
+    Tt_0 = Tc_0*Tt_c;
     object(0,3) = X_point_OBJ_Real =  Tt_0(0,0);
     object(1,3) = Y_point_OBJ_Real =  Tt_0(1,0);
     object(2,3) = Z_point_OBJ_Real =  Tt_0(2,0);

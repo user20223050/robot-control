@@ -334,7 +334,4 @@ void Robot::Get_Joint_Angle()
     Joint_4_angle_R = Joint_4_angle_R + Joint_4_speed_R*0.05;
     Joint_5_angle_R = Joint_5_angle_R + Joint_5_speed_R*0.05;
     Joint_6_angle_R = Joint_6_angle_R + Joint_6_speed_R*0.05;
-    Joint_4_angle_R = 0;
-    Joint_5_angle_R = Joint_5_angle_R + Joint_5_speed_R*0.05;
-    Joint_6_angle_R = 0;
 }
