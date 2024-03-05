@@ -84,7 +84,7 @@ void Widget::serialPortReadyRead_Slot()
             ui->MoveObjEdit->appendPlainText(init_sign);
             ui->recvEdit->appendPlainText(init_sign);
             ui->ErrorEdit->appendPlainText(init_sign);
-            F407.state_sign = 3;
+//            F407.state_sign = 3;
             F407.Work_sign = 0;
             follow_num = 0;
             F407.serialPort->write(F407.STOP);
@@ -184,11 +184,12 @@ void Widget::on_closeBt_clicked()
 
 void Widget::on_Begin_followBt_clicked()
 {
-    if(F407.state_sign == 3) {
+//    if(F407.state_sign == 3) {
+        F407.state_sign = 3;
         F407.serialPort->write(F407.Start_T);
         F407.stop_sign = 0;
         mpc.limit = 0;
-    }
+//    }
 }
 
 void Widget::on_Stop_TrackBT_clicked()
