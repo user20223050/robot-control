@@ -123,9 +123,9 @@ void MPC_Control::Refresh_Error(Robot &robot, mobile_pose &mobile)
 //     std::cout<<"x_error(0,0) = "<<x_error(0,0)<<std::endl;
 //     std::cout<<"x_error(1,0) = "<<x_error(1,0)<<std::endl;
 //     std::cout<<"x_error(2,0) = "<<x_error(2,0)<<std::endl;
-     std::cout<<"YA_Error(0,0) = "<<YA_Error(0,0)<<std::endl;
-     std::cout<<"YA_Error(1,0) = "<<YA_Error(1,0)<<std::endl;
-     std::cout<<"YA_Error(2,0) = "<<YA_Error(2,0)<<std::endl;
+//     std::cout<<"YA_Error(0,0) = "<<YA_Error(0,0)<<std::endl;
+//     std::cout<<"YA_Error(1,0) = "<<YA_Error(1,0)<<std::endl;
+//     std::cout<<"YA_Error(2,0) = "<<YA_Error(2,0)<<std::endl;
 //     std::cout<<"z_error(0,0) = "<<z_error(0,0)<<std::endl;
 //     std::cout<<"z_error(1,0) = "<<z_error(1,0)<<std::endl;
 //     std::cout<<"z_error(2,0) = "<<z_error(2,0)<<std::endl;

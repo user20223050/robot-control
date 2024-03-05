@@ -92,26 +92,26 @@ void Slave_Copmputer::joint_rotate_direction(Robot &robot)
             Joint1_rotate_direction = 1;
         if((round(robot.Joint_1_angle_R * 10000) / 10000) - (round(joint_1_angle_old * 10000) / 10000) < 0)
             Joint1_rotate_direction = 0;
-
         if((round(robot.Joint_2_angle_R * 10000) / 10000) - (round(joint_2_angle_old * 10000) / 10000) > 0)
             Joint2_rotate_direction = 0;
         if((round(robot.Joint_2_angle_R * 10000) / 10000) - (round(joint_2_angle_old * 10000) / 10000) < 0)
             Joint2_rotate_direction = 1;
-
         if((round(robot.Joint_3_angle_R * 10000) / 10000) - (round(joint_3_angle_old * 10000) / 10000) > 0)
             Joint3_rotate_direction = 1;
         if((round(robot.Joint_3_angle_R * 10000) / 10000) - (round(joint_3_angle_old * 10000) / 10000) < 0)
             Joint3_rotate_direction = 0;
+        if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) > 0)
+            Joint5_rotate_direction = 1;
+        if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) < 0)
+            Joint5_rotate_direction = 0;
         first_in = 2;//·ÀÖ¹Òç³ö
     }
-
     joint_1_angle_old = robot.Joint_1_angle_R;
     joint_2_angle_old = robot.Joint_2_angle_R;
     joint_3_angle_old = robot.Joint_3_angle_R;
     joint_4_angle_old = robot.Joint_4_angle_R;
     joint_5_angle_old = robot.Joint_5_angle_R;
     joint_6_angle_old = robot.Joint_6_angle_R;
-
     first_in++;
 }
 
@@ -148,6 +148,15 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     else
     buffer3[3] = 0x00;
 
+    Low_Byte = pulse5&0xff;
+    High_Byte = (pulse5>>8)&0xff;
+    buffer5[1] = (static_cast<int>(Low_Byte));
+    buffer5[2] = (static_cast<int>(High_Byte));
+    if(Joint5_rotate_direction == 1)
+    buffer5[3] = 0x01;
+    else
+    buffer5[3] = 0x00;
+
 }
 
 void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mobile)
@@ -181,24 +190,22 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
 //    }
     robot.Three_Ik();
     robot.zyzEuler_Ik();
-
     robot.get_joint_speed();
     robot.Get_Joint_Angle();
     robot.FK();
     mpc.Refresh_Error(robot,mobile);
     calculate_pulse(robot);
     Serial_message(robot);
-
     serialPort->write(buffer1);
     serialPort->write(buffer2);
     serialPort->write(buffer3);
     serialPort->write(buffer4);
     serialPort->write(buffer5);
     serialPort->write(buffer6);
-
     std::cout<<"pulse1 = "<<pulse1<<std::endl;
     std::cout<<"pulse2 = "<<pulse2<<std::endl;
     std::cout<<"pulse3 = "<<pulse3<<std::endl;
+    std::cout<<"pulse5 = "<<pulse5<<std::endl;
 
 }
 
@@ -211,7 +218,6 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     Joint3_speed = (robot.init_motion[i] - robot.init_motion[i-1])/0.05;
     robot.Joint_3_angle_R = robot.init_motion[i];
     uint Pulse3 = 42000000*(2*M_PI)/(abs(Joint3_speed)*6000*robot.Z3);
-
     Low_Byte = Pulse3&0xff;
     High_Byte = (Pulse3>>8)&0xff;
     buffer3[1] = (static_cast<int>(Low_Byte));
@@ -220,15 +226,12 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     buffer3[3] = 0x01;
     if(Init_sign == 1)
     buffer3[3] = 0x00;
-
     buffer1[1] = 0xff;
     buffer1[2] = 0xff;
     buffer1[3] = 0x01;
-
     buffer2[1] = 0xff;
     buffer2[2] = 0xff;
     buffer2[3] = 0x01;
-
     serialPort->write(buffer1);
     serialPort->write(buffer2);
     serialPort->write(buffer3);
