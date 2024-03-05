@@ -16,8 +16,8 @@ class mobile_pose;
 
 #define LIMIT_DDANGLE   2.4
 #define LIMIT_DANGLE    0.8
-#define LIMIT_DDPOINT   450
-#define LIMIT_DPOINT    150
+#define LIMIT_DDPOINT   300
+#define LIMIT_DPOINT    100
 
 class MPC_Control
 {
