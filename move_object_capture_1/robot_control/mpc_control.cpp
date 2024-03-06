@@ -228,15 +228,15 @@ void MPC_Control::Calculate_Out_Z(float U, Robot &robot,Slave_Copmputer& F407)
 void MPC_Control::Calculate_Out_XA(float U, Robot &robot)
 {
     robot.FA_X_tool_ddangle_C -= U*0.05;
-    if(robot.FA_X_tool_ddangle_C > LIMIT_DDANGLE)
-        robot.FA_X_tool_ddangle_C = LIMIT_DDANGLE;
-    if(robot.FA_X_tool_ddangle_C < -LIMIT_DDANGLE)
-        robot.FA_X_tool_ddangle_C = -LIMIT_DDANGLE;
+    if(robot.FA_X_tool_ddangle_C > limit*LIMIT_DDANGLE)
+        robot.FA_X_tool_ddangle_C = limit*LIMIT_DDANGLE;
+    if(robot.FA_X_tool_ddangle_C < -limit*LIMIT_DDANGLE)
+        robot.FA_X_tool_ddangle_C = -limit*LIMIT_DDANGLE;
     robot.FA_X_tool_dangle_C += robot.FA_X_tool_ddangle_C*0.05;
-    if(robot.FA_X_tool_dangle_C > LIMIT_DANGLE)
-        robot.FA_X_tool_dangle_C = LIMIT_DANGLE;
-    if(robot.FA_X_tool_dangle_C < -LIMIT_DANGLE)
-        robot.FA_X_tool_dangle_C = -LIMIT_DANGLE;
+    if(robot.FA_X_tool_dangle_C > limit*LIMIT_DANGLE)
+        robot.FA_X_tool_dangle_C = limit*LIMIT_DANGLE;
+    if(robot.FA_X_tool_dangle_C < -limit*LIMIT_DANGLE)
+        robot.FA_X_tool_dangle_C = -limit*LIMIT_DANGLE;
     if(abs(XA_Error[0]) < 2) {
         robot.FA_X_tool_dangle_C = 0;
         robot.FA_X_tool_ddangle_C = 0;
@@ -248,15 +248,15 @@ void MPC_Control::Calculate_Out_XA(float U, Robot &robot)
 void MPC_Control::Calculate_Out_YA(float U, Robot &robot)
 {
     robot.FA_Y_tool_ddangle_C -= U*0.05;
-    if(robot.FA_Y_tool_ddangle_C > LIMIT_DDANGLE)
-        robot.FA_Y_tool_ddangle_C = LIMIT_DDANGLE;
-    if(robot.FA_Y_tool_ddangle_C < -LIMIT_DDANGLE)
-        robot.FA_Y_tool_ddangle_C = -LIMIT_DDANGLE;
+    if(robot.FA_Y_tool_ddangle_C > limit*LIMIT_DDANGLE)
+        robot.FA_Y_tool_ddangle_C = limit*LIMIT_DDANGLE;
+    if(robot.FA_Y_tool_ddangle_C < -limit*LIMIT_DDANGLE)
+        robot.FA_Y_tool_ddangle_C = -limit*LIMIT_DDANGLE;
     robot.FA_Y_tool_dangle_C += robot.FA_Y_tool_ddangle_C*0.05;
-    if(robot.FA_Y_tool_dangle_C > LIMIT_DANGLE)
-        robot.FA_Y_tool_dangle_C = LIMIT_DANGLE;
-    if(robot.FA_Y_tool_dangle_C < -LIMIT_DANGLE)
-        robot.FA_Y_tool_dangle_C = -LIMIT_DANGLE;
+    if(robot.FA_Y_tool_dangle_C > limit*LIMIT_DANGLE)
+        robot.FA_Y_tool_dangle_C = limit*LIMIT_DANGLE;
+    if(robot.FA_Y_tool_dangle_C < -limit*LIMIT_DANGLE)
+        robot.FA_Y_tool_dangle_C = -limit*LIMIT_DANGLE;
     if(abs(YA_Error[0]) < 2) {
         robot.FA_Y_tool_dangle_C = 0;
         robot.FA_Y_tool_ddangle_C = 0;
@@ -268,15 +268,15 @@ void MPC_Control::Calculate_Out_YA(float U, Robot &robot)
 void MPC_Control::Calculate_Out_ZA(float U, Robot &robot)
 {
     robot.FA_Z_tool_ddangle_C -= U*0.05;
-    if(robot.FA_Z_tool_ddangle_C > LIMIT_DDANGLE)
-        robot.FA_Z_tool_ddangle_C = LIMIT_DDANGLE;
-    if(robot.FA_Z_tool_ddangle_C < -LIMIT_DDANGLE)
-        robot.FA_Z_tool_ddangle_C = -LIMIT_DDANGLE;
+    if(robot.FA_Z_tool_ddangle_C > limit*LIMIT_DDANGLE)
+        robot.FA_Z_tool_ddangle_C = limit*LIMIT_DDANGLE;
+    if(robot.FA_Z_tool_ddangle_C < -limit*LIMIT_DDANGLE)
+        robot.FA_Z_tool_ddangle_C = -limit*LIMIT_DDANGLE;
     robot.FA_Z_tool_dangle_C += robot.FA_Z_tool_ddangle_C*0.05;
-    if(robot.FA_Z_tool_dangle_C > LIMIT_DANGLE)
-        robot.FA_Z_tool_dangle_C = LIMIT_DANGLE;
-    if(robot.FA_Z_tool_dangle_C < -LIMIT_DANGLE)
-        robot.FA_Z_tool_dangle_C = -LIMIT_DANGLE;
+    if(robot.FA_Z_tool_dangle_C > limit*LIMIT_DANGLE)
+        robot.FA_Z_tool_dangle_C = limit*LIMIT_DANGLE;
+    if(robot.FA_Z_tool_dangle_C < -limit*LIMIT_DANGLE)
+        robot.FA_Z_tool_dangle_C = -limit*LIMIT_DANGLE;
     if(abs(ZA_Error[0]) < 2) {
         robot.FA_Z_tool_dangle_C = 0;
         robot.FA_Z_tool_ddangle_C = 0;

@@ -104,9 +104,9 @@ void Slave_Copmputer::joint_rotate_direction(Robot &robot)
         if((round(robot.Joint_4_angle_R * 10000) / 10000) - (round(joint_4_angle_old * 10000) / 10000) < 0)
             Joint4_rotate_direction = 0;
         if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) > 0)
-            Joint5_rotate_direction = 1;
-        if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) < 0)
             Joint5_rotate_direction = 0;
+        if((round(robot.Joint_5_angle_R * 10000) / 10000) - (round(joint_5_angle_old * 10000) / 10000) < 0)
+            Joint5_rotate_direction = 1;
         first_in = 2;//·ÀÖ¹Òç³ö
     }
     joint_1_angle_old = robot.Joint_1_angle_R;
@@ -165,10 +165,9 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     buffer5[1] = (static_cast<int>(Low_Byte));
     buffer5[2] = (static_cast<int>(High_Byte));
     if(Joint5_rotate_direction == 1)
-    buffer5[3] = 0x01;
-    else
     buffer5[3] = 0x00;
-
+    else
+    buffer5[3] = 0x01;
 }
 
 void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mobile)
