@@ -131,31 +131,6 @@ void Widget::serialPortReadyRead_Slot()
         ui->Joint5Edit->setText(QString::number(ui->Joint5Slider->value()));
         ui->Joint6Edit->setText(QString::number(ui->Joint6Slider->value()));
         follow_num++;
-        if(F407.Work_sign == 1) {
-            if(mpc.follow_succeed == 0x07 && abs(round(robot.X_tool_point_R*1)/1-270)<2 && abs(round(robot.Y_tool_point_R*1)/1-0)<2 && abs(round(robot.Z_tool_point_R*1)/1-275)<2) {
-                if(F407.Init_sign == 0) {
-                    ui->MoveObjEdit->clear();
-                    ui->recvEdit->clear();
-                    ui->ErrorEdit->clear();
-                    QString init_sign = {"WORKST OK"};
-                    ui->MoveObjEdit->appendPlainText(init_sign);
-                    ui->recvEdit->appendPlainText(init_sign);
-                    ui->ErrorEdit->appendPlainText(init_sign);
-                    follow_num = 0;
-                    F407.Work_sign = 0;
-                    F407.serialPort->write(F407.STOP);
-                    F407.stop_sign = 1;
-                    mpc.Calculate_Out_X(0,robot,F407);
-                    mpc.Calculate_Out_Y(0,robot,F407);
-                    mpc.Calculate_Out_Z(0,robot,F407);
-                }
-                if(F407.Init_sign == 1) {
-                    F407.state_sign = 1;
-                }
-            }
-        }
-    //    zd = 100*sin(0.02*yd)+150;
-    //    yd += 2;
     }
 }
 
@@ -199,25 +174,12 @@ void Widget::on_Stop_TrackBT_clicked()
 
 void Widget::on_Work_StateBt_clicked()
 {
-    static uint8_t i = 0;
-    ui->Get_MoveEdit->clear();
-    QString Robot_Init = QString::number(270) + "," + QString::number(0) + "," + QString::number(275);
-    ui->Get_MoveEdit->append(Robot_Init);
-    follow_target = 1;
-    if(i == 0) {
-        F407.state_sign = 1;
-        i++;
-    }
+    F407.state_sign = 1;
     F407.serialPort->write(F407.Start_T);
     mpc.limit = 0;
-    F407.stop_sign = 0;
-    F407.Work_sign = 1;
 }
 
 void Widget::on_Init_StateBt_clicked()
 {
-    if(F407.state_sign == 3){
-        on_Work_StateBt_clicked();
-        F407.Init_sign = 1;
-    }
+
 }

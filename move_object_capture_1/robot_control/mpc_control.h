@@ -17,8 +17,8 @@ class mobile_pose;
 #define LIMIT_DDDAP   50000
 #define LIMIT_DDANGLE   2.4
 #define LIMIT_DANGLE    0.8
-#define LIMIT_DDPOINT  8000
-#define LIMIT_DPOINT    500
+#define LIMIT_DDPOINT  5000
+#define LIMIT_DPOINT    150//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
 
 class MPC_Control
 {
