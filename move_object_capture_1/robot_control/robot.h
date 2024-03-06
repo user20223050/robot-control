@@ -150,10 +150,12 @@ public:
    void FK(void);
    void Fixed_angle_calculate(void);
    void Fixed_angle_invcalculate(void);
-   void get_joint_speed(void);
+   void get_joint_speed_first(void);
+   void get_joint_speed_second(void);
    void Back_Init_Position(void);
    void Linear_Speed_Plan(float finish_angle,float init_angle);
-   void Get_Joint_Angle(void);
+   void Get_Joint_Angle_first(void);
+   void Get_Joint_Angle_second(void);
 };
 
 #endif // ROBOT_H

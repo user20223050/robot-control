@@ -23,7 +23,7 @@ Robot::Robot():T1_0(4,4),T2_1(4,4),T3_2(4,4),T4_3(4,4),P4_3(4,1),P4_0(4,1),T5_4(
               0, 0, 1,     0,
               0, 0, 0,     1;
 }
-
+/*从初始状态到工作状态*/
 void Robot::Robot_Set_Work_position(void)
 {
     /*INIT_STATE*/
@@ -67,10 +67,11 @@ void Robot::Robot_Set_Work_position(void)
     Joint_4_angle_R = Joint_4_angle_C = 0;
     Joint_5_angle_R = Joint_5_angle_C = 0;
     Joint_6_angle_R = Joint_6_angle_C = 0;
-    get_joint_speed();
+//    get_joint_speed_first();
+//    get_joint_speed_second();
     FK();//由关节角度得到末端位置
 }
-
+/*三关节逆运动学求解*/
 void Robot::Three_Ik(void)
 {
     Fixed_angle_calculate();
@@ -93,7 +94,7 @@ void Robot::Three_Ik(void)
         Joint_1_angle_C = round(Joint_1_angle_C * 10000) / 10000;
     }
 }
-
+/*末端三关节逆运动学求解*/
 void Robot::zyzEuler_Ik(void)
 {
     Eigen::MatrixXd R1_0(3,3);
@@ -102,14 +103,14 @@ void Robot::zyzEuler_Ik(void)
     Eigen::MatrixXd R4_X(3,3);
     Eigen::MatrixXd R3_0(3,3);
     Eigen::MatrixXd R6_3(3,3);
-    R1_0 << cos(Joint_1_angle_C), -sin(Joint_1_angle_C), 0,
-            sin(Joint_1_angle_C),  cos(Joint_1_angle_C), 0,
+    R1_0 << cos(Joint_1_angle_R), -sin(Joint_1_angle_R), 0,
+            sin(Joint_1_angle_R),  cos(Joint_1_angle_R), 0,
                                0,                     0, 1;
-    R2_1 << cos(Joint_2_angle_C), -sin(Joint_2_angle_C), 0,
+    R2_1 << cos(Joint_2_angle_R), -sin(Joint_2_angle_R), 0,
                                0,                     0, 1,
-           -sin(Joint_2_angle_C), -cos(Joint_2_angle_C), 0;
-    R3_2 << cos(Joint_3_angle_C), -sin(Joint_3_angle_C), 0,
-            sin(Joint_3_angle_C),  cos(Joint_3_angle_C), 0,
+           -sin(Joint_2_angle_R), -cos(Joint_2_angle_R), 0;
+    R3_2 << cos(Joint_3_angle_R), -sin(Joint_3_angle_R), 0,
+            sin(Joint_3_angle_R),  cos(Joint_3_angle_R), 0,
                                0,                     0, 1;
     R4_X <<                    1,                     0, 0,
                                0,                     0, 1,
@@ -250,14 +251,11 @@ void Robot::Fixed_angle_invcalculate()
     std::cout<<"ZA = "<<FA_Z_tool_angle_R<<std::endl;
 }
 
-void Robot::get_joint_speed(void)
+void Robot::get_joint_speed_first(void)
 {
     Joint_1_speed_R = (Joint_1_angle_C-Joint_1_angle_R)/0.05;
     Joint_2_speed_R = (Joint_2_angle_C-Joint_2_angle_R)/0.05;
     Joint_3_speed_R = (Joint_3_angle_C-Joint_3_angle_R)/0.05;
-    Joint_4_speed_R = (Joint_4_angle_C-Joint_4_angle_R)/0.05;
-    Joint_5_speed_R = (Joint_5_angle_C-Joint_5_angle_R)/0.05;
-    Joint_6_speed_R = (Joint_6_angle_C-Joint_6_angle_R)/0.05;
     //电机段最大3000rpm/min == 314rad/s == speed*z
     if(Joint_1_speed_R > 1.5)
         Joint_1_speed_R = 1.5;
@@ -271,6 +269,14 @@ void Robot::get_joint_speed(void)
         Joint_3_speed_R = 5;
     if(Joint_3_speed_R < -5)
         Joint_3_speed_R = -5;
+}
+
+void Robot::get_joint_speed_second(void)
+{
+    Joint_4_speed_R = (Joint_4_angle_C-Joint_4_angle_R)/0.05;
+    Joint_5_speed_R = (Joint_5_angle_C-Joint_5_angle_R)/0.05;
+    Joint_6_speed_R = (Joint_6_angle_C-Joint_6_angle_R)/0.05;
+    //电机段最大3000rpm/min == 314rad/s == speed*z
     if(Joint_4_speed_R > 1.5)
         Joint_4_speed_R = 1.5;
     if(Joint_4_speed_R < -1.5)
@@ -310,11 +316,15 @@ void Robot::Linear_Speed_Plan(float finish_angle,float init_angle)
     }
 }
 
-void Robot::Get_Joint_Angle()
+void Robot::Get_Joint_Angle_first(void)
 {
     Joint_1_angle_R = Joint_1_angle_R + Joint_1_speed_R*0.05;
     Joint_2_angle_R = Joint_2_angle_R + Joint_2_speed_R*0.05;
     Joint_3_angle_R = Joint_3_angle_R + Joint_3_speed_R*0.05;
+}
+
+void Robot::Get_Joint_Angle_second(void)
+{
     Joint_4_angle_R = Joint_4_angle_R + Joint_4_speed_R*0.05;
     Joint_5_angle_R = Joint_5_angle_R + Joint_5_speed_R*0.05;
     Joint_6_angle_R = Joint_6_angle_R + Joint_6_speed_R*0.05;

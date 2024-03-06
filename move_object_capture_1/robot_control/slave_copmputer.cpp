@@ -202,9 +202,11 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
 //        }
 //    }
     robot.Three_Ik();
+    robot.get_joint_speed_first();
+    robot.Get_Joint_Angle_first();
     robot.zyzEuler_Ik();
-    robot.get_joint_speed();
-    robot.Get_Joint_Angle();
+    robot.get_joint_speed_second();
+    robot.Get_Joint_Angle_second();
     robot.FK();
     mpc.Refresh_Error(robot,mobile);
     calculate_pulse(robot);
