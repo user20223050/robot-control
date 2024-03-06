@@ -228,17 +228,17 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uchar Low_Byte;
     static uint8_t i = 1;
     float Joint3_speed;
-    Joint3_speed = (robot.init_motion[i] - robot.init_motion[i-1])/0.05;
-    robot.Joint_3_angle_R = robot.init_motion[i];
+    Joint3_speed = (robot.joint3_buf[i] - robot.joint3_buf[i-1])/0.05;
+    robot.Joint_3_angle_R = robot.joint3_buf[i];
     uint Pulse3 = 42000000*(2*M_PI)/(abs(Joint3_speed)*6000*robot.Z3);
     Low_Byte = Pulse3&0xff;
     High_Byte = (Pulse3>>8)&0xff;
     buffer3[1] = (static_cast<int>(Low_Byte));
     buffer3[2] = (static_cast<int>(High_Byte));
-    if(Init_sign == 0)
-    buffer3[3] = 0x01;
-    if(Init_sign == 1)
-    buffer3[3] = 0x00;
+    if((robot.joint3_buf[i] - robot.joint3_buf[i-1]) > 0)
+        buffer3[3] = 0x01;
+    else
+        buffer3[3] = 0x00;
     buffer1[1] = 0xff;
     buffer1[2] = 0xff;
     buffer1[3] = 0x01;

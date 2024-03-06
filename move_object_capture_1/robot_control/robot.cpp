@@ -54,7 +54,7 @@ void Robot::Robot_Set_Work_position(void)
     Three_Ik();
     zyzEuler_Ik();
     float finish_angle3 = Joint_3_angle_C;
-    Linear_Speed_Plan(finish_angle3,init_angle3);
+    Linear_Speed_Plan(finish_angle3,init_angle3,joint3_buf);
     X_robot_point_R = X_robot_point_C;
     Y_robot_point_R = Y_robot_point_C;
     Z_robot_point_R = Z_robot_point_C;
@@ -269,6 +269,11 @@ void Robot::get_joint_speed_first(void)
         Joint_3_speed_R = 5;
     if(Joint_3_speed_R < -5)
         Joint_3_speed_R = -5;
+    if(isnan(Joint_1_speed_R) || isnan(Joint_2_speed_R) || isnan(Joint_3_speed_R))
+        Joint_1_speed_R = Joint_2_speed_R = Joint_3_speed_R = 0;
+    std::cout<<"Joint_1_speed_R = "<<Joint_1_speed_R<<std::endl;
+    std::cout<<"Joint_2_speed_R = "<<Joint_2_speed_R<<std::endl;
+    std::cout<<"Joint_3_speed_R = "<<Joint_3_speed_R<<std::endl;
 }
 
 void Robot::get_joint_speed_second(void)
@@ -289,6 +294,11 @@ void Robot::get_joint_speed_second(void)
         Joint_6_speed_R = 6;
     if(Joint_6_speed_R < -6)
         Joint_6_speed_R = -6;
+    if(isnan(Joint_1_speed_R) || isnan(Joint_2_speed_R) || isnan(Joint_3_speed_R))
+        Joint_4_speed_R = Joint_5_speed_R = Joint_6_speed_R = 0;
+    std::cout<<"Joint_4_speed_R = "<<Joint_4_speed_R<<std::endl;
+    std::cout<<"Joint_5_speed_R = "<<Joint_5_speed_R<<std::endl;
+    std::cout<<"Joint_6_speed_R = "<<Joint_6_speed_R<<std::endl;
 }
 
 void Robot::Back_Init_Position()
@@ -296,22 +306,22 @@ void Robot::Back_Init_Position()
 
 }
 
-void Robot::Linear_Speed_Plan(float finish_angle,float init_angle)
+void Robot::Linear_Speed_Plan(float finish_angle,float init_angle,float *joint_num)
 {
     float v = (finish_angle-init_angle)/4;
     float dv1 = v;
     float dv2 = -v;
     float t = 0.05;
     for(uint i = 0;i<20;i++) {
-        init_motion[i] = init_angle + 0.5*dv1*pow(t,2);
+        joint_num[i] = init_angle + 0.5*dv1*pow(t,2);
         t += 0.05;
     }
     for(uint i = 20;i<80;i++) {
-        init_motion[i] = init_angle + v*(t-0.5);
+        joint_num[i] = init_angle + v*(t-0.5);
         t += 0.05;
     }
     for(uint i = 80;i<100;i++) {
-        init_motion[i] = init_angle +v*(t-0.5)+0.5*dv2*pow((t-4),2);
+        joint_num[i] = init_angle +v*(t-0.5)+0.5*dv2*pow((t-4),2);
         t += 0.05;
     }
 }

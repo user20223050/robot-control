@@ -141,7 +141,12 @@ public:
     //中间变换矩阵
     Eigen::MatrixXd T1_0,T2_1,T3_2,T4_3,P4_3,P4_0,T5_4,T6_5,Tt_6;
     //从初始状态到工作状态的变换
-    float init_motion[100];
+    float joint1_buf[100];
+    float joint2_buf[100];
+    float joint3_buf[100];
+    float joint4_buf[100];
+    float joint5_buf[100];
+    float joint6_buf[100];
 public:
    Robot();
    void Robot_Set_Work_position(void);
@@ -153,7 +158,7 @@ public:
    void get_joint_speed_first(void);
    void get_joint_speed_second(void);
    void Back_Init_Position(void);
-   void Linear_Speed_Plan(float finish_angle,float init_angle);
+   void Linear_Speed_Plan(float finish_angle,float init_angle,float *joint_num);
    void Get_Joint_Angle_first(void);
    void Get_Joint_Angle_second(void);
 };
