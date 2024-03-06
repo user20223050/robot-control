@@ -174,7 +174,17 @@ void Widget::on_Stop_TrackBT_clicked()
 
 void Widget::on_Work_StateBt_clicked()
 {
+    static uint8_t sign = 0;
     F407.state_sign = 1;
+    if(sign == 1) {
+        robot.Linear_Speed_Plan(0,robot.Joint_1_angle_R,robot.joint1_buf);
+        robot.Linear_Speed_Plan(-M_PI/2,robot.Joint_2_angle_R,robot.joint2_buf);
+        robot.Linear_Speed_Plan(0,robot.Joint_3_angle_R,robot.joint3_buf);
+        robot.Linear_Speed_Plan(0,robot.Joint_4_angle_R,robot.joint4_buf);
+        robot.Linear_Speed_Plan(0,robot.Joint_5_angle_R,robot.joint5_buf);
+        robot.Linear_Speed_Plan(0,robot.Joint_6_angle_R,robot.joint6_buf);
+    }
+    sign = 1;
     F407.serialPort->write(F407.Start_T);
     mpc.limit = 0;
 }

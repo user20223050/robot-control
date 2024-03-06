@@ -227,7 +227,34 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uchar High_Byte;
     uchar Low_Byte;
     static uint8_t i = 1;
+    float Joint1_speed;
+    float Joint2_speed;
     float Joint3_speed;
+    float Joint4_speed;
+    float Joint5_speed;
+    float Joint6_speed;
+    Joint1_speed = (robot.joint1_buf[i] - robot.joint1_buf[i-1])/0.05;
+    robot.Joint_1_angle_R = robot.joint1_buf[i];
+    uint Pulse1 = 42000000*(2*M_PI)/(abs(Joint1_speed)*6000*robot.Z1);
+    Low_Byte = Pulse1&0xff;
+    High_Byte = (Pulse1>>8)&0xff;
+    buffer1[1] = (static_cast<int>(Low_Byte));
+    buffer1[2] = (static_cast<int>(High_Byte));
+    if((robot.joint1_buf[i] - robot.joint1_buf[i-1]) > 0)
+        buffer1[3] = 0x01;
+    else
+        buffer1[3] = 0x00;
+    Joint2_speed = (robot.joint2_buf[i] - robot.joint2_buf[i-1])/0.05;
+    robot.Joint_2_angle_R = robot.joint2_buf[i];
+    uint Pulse2 = 42000000*(2*M_PI)/(abs(Joint2_speed)*6000*robot.Z2);
+    Low_Byte = Pulse2&0xff;
+    High_Byte = (Pulse2>>8)&0xff;
+    buffer2[1] = (static_cast<int>(Low_Byte));
+    buffer2[2] = (static_cast<int>(High_Byte));
+    if((robot.joint2_buf[i] - robot.joint2_buf[i-1]) > 0)
+        buffer2[3] = 0x01;
+    else
+        buffer2[3] = 0x00;
     Joint3_speed = (robot.joint3_buf[i] - robot.joint3_buf[i-1])/0.05;
     robot.Joint_3_angle_R = robot.joint3_buf[i];
     uint Pulse3 = 42000000*(2*M_PI)/(abs(Joint3_speed)*6000*robot.Z3);
@@ -239,23 +266,48 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
         buffer3[3] = 0x01;
     else
         buffer3[3] = 0x00;
-    buffer1[1] = 0xff;
-    buffer1[2] = 0xff;
-    buffer1[3] = 0x01;
-    buffer2[1] = 0xff;
-    buffer2[2] = 0xff;
-    buffer2[3] = 0x01;
+    Joint4_speed = (robot.joint4_buf[i] - robot.joint4_buf[i-1])/0.05;
+    robot.Joint_4_angle_R = robot.joint4_buf[i];
+    uint Pulse4 = 42000000*(2*M_PI)/(abs(Joint4_speed)*6000*robot.Z4);
+    Low_Byte = Pulse4&0xff;
+    High_Byte = (Pulse4>>8)&0xff;
+    buffer4[1] = (static_cast<int>(Low_Byte));
+    buffer4[2] = (static_cast<int>(High_Byte));
+    if((robot.joint4_buf[i] - robot.joint4_buf[i-1]) > 0)
+        buffer4[3] = 0x01;
+    else
+        buffer4[3] = 0x00;
+    Joint5_speed = (robot.joint5_buf[i] - robot.joint5_buf[i-1])/0.05;
+    robot.Joint_5_angle_R = robot.joint5_buf[i];
+    uint Pulse5 = 42000000*(2*M_PI)/(abs(Joint5_speed)*6000*robot.Z5);
+    Low_Byte = Pulse5&0xff;
+    High_Byte = (Pulse5>>8)&0xff;
+    buffer5[1] = (static_cast<int>(Low_Byte));
+    buffer5[2] = (static_cast<int>(High_Byte));
+    if((robot.joint5_buf[i] - robot.joint5_buf[i-1]) > 0)
+        buffer5[3] = 0x01;
+    else
+        buffer5[3] = 0x00;
+    Joint6_speed = (robot.joint6_buf[i] - robot.joint6_buf[i-1])/0.05;
+    robot.Joint_6_angle_R = robot.joint6_buf[i];
+    uint Pulse6 = 42000000*(2*M_PI)/(abs(Joint6_speed)*6000*robot.Z6);
+    Low_Byte = Pulse6&0xff;
+    High_Byte = (Pulse6>>8)&0xff;
+    buffer6[1] = (static_cast<int>(Low_Byte));
+    buffer6[2] = (static_cast<int>(High_Byte));
+    if((robot.joint6_buf[i] - robot.joint6_buf[i-1]) > 0)
+        buffer6[3] = 0x01;
+    else
+        buffer6[3] = 0x00;
     serialPort->write(buffer1);
     serialPort->write(buffer2);
     serialPort->write(buffer3);
     serialPort->write(buffer4);
     serialPort->write(buffer5);
     serialPort->write(buffer6);
-    if(Init_sign == 0)
-        i++;
-    if(Init_sign == 1)
-        i--;
-    if(i == 100 || i == 0){
+    i++;
+    if(i == 100) {
+        i = 0;
         state_sign = 2;
     }
      std::cout<<"i = "<<static_cast<int>(i)<<std::endl;

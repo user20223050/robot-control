@@ -141,12 +141,12 @@ public:
     //中间变换矩阵
     Eigen::MatrixXd T1_0,T2_1,T3_2,T4_3,P4_3,P4_0,T5_4,T6_5,Tt_6;
     //从初始状态到工作状态的变换
-    float joint1_buf[100];
+    float joint1_buf[100] = {0};
     float joint2_buf[100];
     float joint3_buf[100];
-    float joint4_buf[100];
-    float joint5_buf[100];
-    float joint6_buf[100];
+    float joint4_buf[100] = {0};
+    float joint5_buf[100] = {0};
+    float joint6_buf[100] = {0};
 public:
    Robot();
    void Robot_Set_Work_position(void);

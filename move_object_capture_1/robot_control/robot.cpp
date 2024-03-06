@@ -22,6 +22,12 @@ Robot::Robot():T1_0(4,4),T2_1(4,4),T3_2(4,4),T4_3(4,4),P4_3(4,1),P4_0(4,1),T5_4(
               0, 1, 0,     0,
               0, 0, 1,     0,
               0, 0, 0,     1;
+    for (int i = 0; i < 100; ++i) {
+        joint2_buf[i] = -M_PI/2;
+    }
+    for (int i = 0; i < 100; ++i) {
+        joint3_buf[i] = -M_PI/2;
+    }
 }
 /*从初始状态到工作状态*/
 void Robot::Robot_Set_Work_position(void)
