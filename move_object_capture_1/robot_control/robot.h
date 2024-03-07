@@ -147,6 +147,8 @@ public:
     float joint4_buf[100] = {0};
     float joint5_buf[100] = {0};
     float joint6_buf[100] = {0};
+    //Œª÷√¥ÌŒÛ±Í÷æ
+    uint8_t errror_position;
 public:
    Robot();
    void Robot_Set_Work_position(void);

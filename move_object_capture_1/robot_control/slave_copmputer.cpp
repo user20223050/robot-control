@@ -172,25 +172,34 @@ void Slave_Copmputer::Serial_message(Robot &robot)
 
 void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mobile)
 {
+    static uint8_t sign = 0;
+    mobile.refresh_object();
+    mobile.reflash_target();
     float u_x = mpc.Prediction(mpc.X_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_y = mpc.Prediction(mpc.Y_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_z = mpc.Prediction(mpc.Z_Error.col(0), mpc.E,mpc.H, mpc.N);
-    float u_xa = mpc.Prediction(mpc.XA_Error.col(0), mpc.E,mpc.H, mpc.N);
-    float u_ya = mpc.Prediction(mpc.YA_Error.col(0), mpc.E,mpc.H, mpc.N);
-    float u_za = mpc.Prediction(mpc.ZA_Error.col(0), mpc.E,mpc.H, mpc.N);
-
-    mobile.refresh_object();
-    mobile.reflash_target();
 
     mpc.Calculate_Out_X(u_x,robot,*this);
     mpc.Calculate_Out_Y(u_y,robot,*this);
     mpc.Calculate_Out_Z(u_z,robot,*this);
-
-    mpc.Calculate_Out_ZA(u_za,robot);
-    mpc.Calculate_Out_XA(u_xa,robot);
-    mpc.Calculate_Out_YA(u_ya,robot);
-
-
+    robot.Three_Ik();
+    robot.get_joint_speed_first();
+    robot.Get_Joint_Angle_first();
+    if(robot.errror_position == 1) {
+        serialPort->write(STOP);
+    }
+    if((abs(mpc.X_Error(0,0)) < 10.0 && abs(mpc.Y_Error(0,0)) < 10.0 && abs(mpc.Z_Error(0,0)) < 10.0) || (sign == 1)) {
+        float u_xa = mpc.Prediction(mpc.XA_Error.col(0), mpc.E,mpc.H, mpc.N);
+        float u_ya = mpc.Prediction(mpc.YA_Error.col(0), mpc.E,mpc.H, mpc.N);
+        float u_za = mpc.Prediction(mpc.ZA_Error.col(0), mpc.E,mpc.H, mpc.N);
+        mpc.Calculate_Out_ZA(u_za,robot);
+        mpc.Calculate_Out_XA(u_xa,robot);
+        mpc.Calculate_Out_YA(u_ya,robot);
+        robot.zyzEuler_Ik();
+        robot.get_joint_speed_second();
+        robot.Get_Joint_Angle_second();
+        sign = 1;
+    }
 //    if(Work_sign == 0){
 //        if(robot.X_tool_point_R>300 || robot.X_tool_point_R<-5 || robot.Y_tool_point_R<-250 || robot.Y_tool_point_R>250 || robot.Z_tool_point_R>300 || robot.Z_tool_point_R<-100){
 //            serialPort->write(STOP);
@@ -200,14 +209,9 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
 //            mpc.Calculate_Out_Z(0,robot,*this);
 //        }
 //    }
-    robot.Three_Ik();
-    robot.get_joint_speed_first();
-    robot.Get_Joint_Angle_first();
-    robot.zyzEuler_Ik();
-    robot.get_joint_speed_second();
-    robot.Get_Joint_Angle_second();
     robot.FK();
     mpc.Refresh_Error(robot,mobile);
+
     calculate_pulse(robot);
     Serial_message(robot);
     serialPort->write(buffer1);

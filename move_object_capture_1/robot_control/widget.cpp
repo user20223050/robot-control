@@ -187,6 +187,7 @@ void Widget::on_Work_StateBt_clicked()
     sign = 1;
     F407.serialPort->write(F407.Start_T);
     mpc.limit = 0;
+    robot.errror_position = 0;
 }
 
 void Widget::on_Init_StateBt_clicked()

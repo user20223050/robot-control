@@ -28,6 +28,7 @@ Robot::Robot():T1_0(4,4),T2_1(4,4),T3_2(4,4),T4_3(4,4),P4_3(4,1),P4_0(4,1),T5_4(
     for (int i = 0; i < 100; ++i) {
         joint3_buf[i] = -M_PI/2;
     }
+    errror_position = 0;
 }
 /*从初始状态到工作状态*/
 void Robot::Robot_Set_Work_position(void)
@@ -123,18 +124,18 @@ void Robot::zyzEuler_Ik(void)
                                0,                    -1, 0;
     R3_0 = R1_0*R2_1*R3_2*R4_X;
     R6_3 = (R3_0.inverse())*R6_0_C;
-    Joint_5_angle_C = atan2(sqrt(pow(R6_3(2,0),2) + pow(R6_3(2,1),2)),R6_3(2,2));
+    Joint_5_angle_C = round((atan2(sqrt(pow(R6_3(2,0),2) + pow(R6_3(2,1),2)),R6_3(2,2))) * 1000) / 1000;
     if(round(((Joint_5_angle_C)*180/M_PI)*1)/1 == 0){
-        Joint_4_angle_C = 0 - M_PI;
-        Joint_6_angle_C = atan2(-R6_3(0,1),R6_3(0,0)) - M_PI;
+        Joint_4_angle_C = round((0 - M_PI) * 1000) / 1000;
+        Joint_6_angle_C = round((atan2(-R6_3(0,1),R6_3(0,0)) - M_PI) * 1000) / 1000;
     }
     if(round(((Joint_5_angle_C)*180/M_PI)*1)/1 ==180){
-        Joint_4_angle_C = 0 - M_PI;
-        Joint_6_angle_C = atan2(R6_3(0,1),-R6_3(0,0)) - M_PI;
+        Joint_4_angle_C = round((0 - M_PI) * 1000) / 1000;
+        Joint_6_angle_C = round((atan2(R6_3(0,1),-R6_3(0,0)) - M_PI) * 1000) / 1000;
     }
     else {
-        Joint_4_angle_C = atan2(R6_3(1,2)/sin(Joint_5_angle_C),R6_3(0,2)/sin(Joint_5_angle_C)) - M_PI;
-        Joint_6_angle_C = atan2(R6_3(2,1)/sin(Joint_5_angle_C),-R6_3(2,0)/sin(Joint_5_angle_C)) - M_PI;
+        Joint_4_angle_C = round((atan2(R6_3(1,2)/sin(Joint_5_angle_C),R6_3(0,2)/sin(Joint_5_angle_C)) - M_PI) * 1000) / 1000;
+        Joint_6_angle_C = round((atan2(R6_3(2,1)/sin(Joint_5_angle_C),-R6_3(2,0)/sin(Joint_5_angle_C)) - M_PI) * 1000) / 1000;
     }
 }
 
@@ -275,8 +276,10 @@ void Robot::get_joint_speed_first(void)
         Joint_3_speed_R = 5;
     if(Joint_3_speed_R < -5)
         Joint_3_speed_R = -5;
-    if(isnan(Joint_1_speed_R) || isnan(Joint_2_speed_R) || isnan(Joint_3_speed_R))
+    if(isnan(Joint_1_speed_R) || isnan(Joint_2_speed_R) || isnan(Joint_3_speed_R)) {
         Joint_1_speed_R = Joint_2_speed_R = Joint_3_speed_R = 0;
+        errror_position = 1;
+    }
     std::cout<<"Joint_1_speed_R = "<<Joint_1_speed_R<<std::endl;
     std::cout<<"Joint_2_speed_R = "<<Joint_2_speed_R<<std::endl;
     std::cout<<"Joint_3_speed_R = "<<Joint_3_speed_R<<std::endl;
@@ -300,7 +303,7 @@ void Robot::get_joint_speed_second(void)
         Joint_6_speed_R = 6;
     if(Joint_6_speed_R < -6)
         Joint_6_speed_R = -6;
-    if(isnan(Joint_1_speed_R) || isnan(Joint_2_speed_R) || isnan(Joint_3_speed_R))
+    if(Joint_1_speed_R ==0 && Joint_2_speed_R == 0 && Joint_3_speed_R == 0)
         Joint_4_speed_R = Joint_5_speed_R = Joint_6_speed_R = 0;
     std::cout<<"Joint_4_speed_R = "<<Joint_4_speed_R<<std::endl;
     std::cout<<"Joint_5_speed_R = "<<Joint_5_speed_R<<std::endl;
