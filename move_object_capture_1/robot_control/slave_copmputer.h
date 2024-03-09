@@ -24,16 +24,6 @@ public:
     uint pulse4;
     uint pulse5;
     uint pulse6;
-    //串口发送数据
-    QByteArray Start_T;
-    QByteArray buffer1;
-    QByteArray buffer2;
-    QByteArray buffer3;
-    QByteArray buffer4;
-    QByteArray buffer5;
-    QByteArray buffer6;
-    QByteArray STOP;
-    QByteArray ERROR;
     //关节旋转方向
     bool Joint1_rotate_direction;
     bool Joint2_rotate_direction;
@@ -41,6 +31,16 @@ public:
     bool Joint4_rotate_direction;
     bool Joint5_rotate_direction;
     bool Joint6_rotate_direction;
+    //串口发送数据
+    char *Start_T;
+    char *buffer1;
+    char *buffer2;
+    char *buffer3;
+    char *buffer4;
+    char *buffer5;
+    char *buffer6;
+    char *STOP;
+    char *ERROR;
     //串口通讯
     QSerialPort *serialPort;
     //状态标志位
@@ -48,6 +48,7 @@ public:
     uint8_t Work_sign;
     uint8_t Init_sign;
     uint8_t stop_sign;
+
 public:
     Slave_Copmputer();
     void calculate_pulse(Robot &robot);
@@ -55,6 +56,9 @@ public:
     void Serial_message(Robot &robot);
     void Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mobile);
     void Work_position_set(Robot &robot);
+    void CRC_cheak(char* buf);
+
+
 };
 
 #endif // SLAVE_COPMPUTER_H

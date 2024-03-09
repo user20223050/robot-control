@@ -35,7 +35,7 @@ Widget::Widget(QWidget *parent) :
 
 Widget::~Widget()
 {
-    F407.serialPort->write(F407.STOP);
+    F407.serialPort->write(F407.STOP,4);
     F407.stop_sign = 1;
     mpc.Calculate_Out_X(0,robot,F407);
     mpc.Calculate_Out_Y(0,robot,F407);
@@ -87,7 +87,7 @@ void Widget::serialPortReadyRead_Slot()
 //            F407.state_sign = 3;
             F407.Work_sign = 0;
             follow_num = 0;
-            F407.serialPort->write(F407.STOP);
+            F407.serialPort->write(F407.STOP,4);
             F407.stop_sign = 1;
             mpc.Calculate_Out_X(0,robot,F407);
             mpc.Calculate_Out_Y(0,robot,F407);
@@ -101,7 +101,7 @@ void Widget::serialPortReadyRead_Slot()
             F407.state_sign = 1;
             F407.Init_sign = 0;
             follow_num = 0;
-            F407.serialPort->write(F407.STOP);
+            F407.serialPort->write(F407.STOP,4);
             F407.stop_sign = 1;
             mpc.Calculate_Out_X(0,robot,F407);
             mpc.Calculate_Out_Y(0,robot,F407);
@@ -149,7 +149,7 @@ void Widget::on_LinkBt_clicked()
 
 void Widget::on_closeBt_clicked()
 {
-    F407.serialPort->write(F407.STOP);
+    F407.serialPort->write(F407.STOP,4);
     F407.stop_sign = 1;
     mpc.Calculate_Out_X(0,robot,F407);
     mpc.Calculate_Out_Y(0,robot,F407);
@@ -159,17 +159,15 @@ void Widget::on_closeBt_clicked()
 
 void Widget::on_Begin_followBt_clicked()
 {
-//    if(F407.state_sign == 3) {
         F407.state_sign = 3;
-        F407.serialPort->write(F407.Start_T);
+        F407.serialPort->write(F407.Start_T,4);
         F407.stop_sign = 0;
         mpc.limit = 0;
-//    }
 }
 
 void Widget::on_Stop_TrackBT_clicked()
 {
-    F407.serialPort->write(F407.STOP);
+    F407.serialPort->write(F407.STOP,4);
 }
 
 void Widget::on_Work_StateBt_clicked()
@@ -185,12 +183,20 @@ void Widget::on_Work_StateBt_clicked()
         robot.Linear_Speed_Plan(0,robot.Joint_6_angle_R,robot.joint6_buf);
     }
     sign = 1;
-    F407.serialPort->write(F407.Start_T);
+    F407.serialPort->write(F407.Start_T,4);
     mpc.limit = 0;
     robot.errror_position = 0;
 }
 
 void Widget::on_Init_StateBt_clicked()
 {
-
+    F407.state_sign = 1;
+    F407.Init_sign = 1;
+    robot.Linear_Speed_Plan(0,robot.Joint_1_angle_R,robot.joint1_buf);
+    robot.Linear_Speed_Plan(-M_PI/2,robot.Joint_2_angle_R,robot.joint2_buf);
+    robot.Linear_Speed_Plan(-M_PI/2,robot.Joint_3_angle_R,robot.joint3_buf);
+    robot.Linear_Speed_Plan(0,robot.Joint_4_angle_R,robot.joint4_buf);
+    robot.Linear_Speed_Plan(0,robot.Joint_5_angle_R,robot.joint5_buf);
+    robot.Linear_Speed_Plan(0,robot.Joint_6_angle_R,robot.joint6_buf);
+    F407.serialPort->write(F407.Start_T,4);
 }
