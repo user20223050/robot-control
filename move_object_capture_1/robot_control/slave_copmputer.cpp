@@ -136,11 +136,10 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     joint_rotate_direction(robot);
     uchar High_Byte;
     uchar Low_Byte;
-
     Low_Byte = pulse1&0xff;
     High_Byte = (pulse1>>8)&0xff;
-    buffer1[1] = (static_cast<int>(Low_Byte));
-    buffer1[2] = (static_cast<int>(High_Byte));
+    buffer1[1] = ((char)Low_Byte);
+    buffer1[2] = ((char)High_Byte);
     if(Joint1_rotate_direction == 1)
     buffer1[3] = 0x00;
     else
@@ -148,8 +147,8 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     CRC_cheak(buffer1);
     Low_Byte = pulse2&0xff;
     High_Byte = (pulse2>>8)&0xff;
-    buffer2[1] = (static_cast<int>(Low_Byte));
-    buffer2[2] = (static_cast<int>(High_Byte));
+    buffer2[1] = ((char)Low_Byte);
+    buffer2[2] = ((char)High_Byte);
     if(Joint2_rotate_direction == 1)
     buffer2[3] = 0x01;
     else
@@ -157,8 +156,8 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     CRC_cheak(buffer2);
     Low_Byte = pulse3&0xff;
     High_Byte = (pulse3>>8)&0xff;
-    buffer3[1] = (static_cast<int>(Low_Byte));
-    buffer3[2] = (static_cast<int>(High_Byte));
+    buffer3[1] = ((char)Low_Byte);
+    buffer3[2] = ((char)High_Byte);
     if(Joint3_rotate_direction == 1)
     buffer3[3] = 0x01;
     else
@@ -166,8 +165,8 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     CRC_cheak(buffer3);
     Low_Byte = pulse4&0xff;
     High_Byte = (pulse4>>8)&0xff;
-    buffer4[1] = (static_cast<int>(Low_Byte));
-    buffer4[2] = (static_cast<int>(High_Byte));
+    buffer4[1] = ((char)Low_Byte);
+    buffer4[2] = ((char)High_Byte);
     if(Joint4_rotate_direction == 1)
     buffer4[3] = 0x01;
     else
@@ -175,8 +174,8 @@ void Slave_Copmputer::Serial_message(Robot &robot)
     CRC_cheak(buffer4);
     Low_Byte = pulse5&0xff;
     High_Byte = (pulse5>>8)&0xff;
-    buffer5[1] = (static_cast<int>(Low_Byte));
-    buffer5[2] = (static_cast<int>(High_Byte));
+    buffer5[1] = ((char)Low_Byte);
+    buffer5[2] = ((char)High_Byte);
     if(Joint5_rotate_direction == 1)
     buffer5[3] = 0x00;
     else
@@ -270,8 +269,8 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uint Pulse1 = 42000000*(2*M_PI)/(abs(Joint1_speed)*6000*robot.Z1);
     Low_Byte = Pulse1&0xff;
     High_Byte = (Pulse1>>8)&0xff;
-    buffer1[1] = (static_cast<int>(Low_Byte));
-    buffer1[2] = (static_cast<int>(High_Byte));
+    buffer1[1] = ((char)Low_Byte);
+    buffer1[2] = ((char)High_Byte);
     if((robot.joint1_buf[i] - robot.joint1_buf[i-1]) > 0)
         buffer1[3] = 0x01;
     else
@@ -282,8 +281,8 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uint Pulse2 = 42000000*(2*M_PI)/(abs(Joint2_speed)*6000*robot.Z2);
     Low_Byte = Pulse2&0xff;
     High_Byte = (Pulse2>>8)&0xff;
-    buffer2[1] = (static_cast<int>(Low_Byte));
-    buffer2[2] = (static_cast<int>(High_Byte));
+    buffer2[1] = ((char)Low_Byte);
+    buffer2[2] = ((char)High_Byte);
     if((robot.joint2_buf[i] - robot.joint2_buf[i-1]) > 0)
         buffer2[3] = 0x01;
     else
@@ -294,8 +293,8 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uint Pulse3 = 42000000*(2*M_PI)/(abs(Joint3_speed)*6000*robot.Z3);
     Low_Byte = Pulse3&0xff;
     High_Byte = (Pulse3>>8)&0xff;
-    buffer3[1] = (static_cast<int>(Low_Byte));
-    buffer3[2] = (static_cast<int>(High_Byte));
+    buffer3[1] = ((char)Low_Byte);
+    buffer3[2] = ((char)High_Byte);
     if((robot.joint3_buf[i] - robot.joint3_buf[i-1]) > 0)
         buffer3[3] = 0x01;
     else
@@ -306,8 +305,8 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uint Pulse4 = 42000000*(2*M_PI)/(abs(Joint4_speed)*6000*robot.Z4);
     Low_Byte = Pulse4&0xff;
     High_Byte = (Pulse4>>8)&0xff;
-    buffer4[1] = (static_cast<int>(Low_Byte));
-    buffer4[2] = (static_cast<int>(High_Byte));
+    buffer4[1] = ((char)Low_Byte);
+    buffer4[2] = ((char)High_Byte);
     if((robot.joint4_buf[i] - robot.joint4_buf[i-1]) > 0)
         buffer4[3] = 0x01;
     else
@@ -318,8 +317,8 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uint Pulse5 = 42000000*(2*M_PI)/(abs(Joint5_speed)*6000*robot.Z5);
     Low_Byte = Pulse5&0xff;
     High_Byte = (Pulse5>>8)&0xff;
-    buffer5[1] = (static_cast<int>(Low_Byte));
-    buffer5[2] = (static_cast<int>(High_Byte));
+    buffer5[1] = ((char)Low_Byte);
+    buffer5[2] = ((char)High_Byte);
     if((robot.joint5_buf[i] - robot.joint5_buf[i-1]) > 0)
         buffer5[3] = 0x01;
     else
@@ -330,8 +329,8 @@ void Slave_Copmputer::Work_position_set(Robot &robot)
     uint Pulse6 = 42000000*(2*M_PI)/(abs(Joint6_speed)*6000*robot.Z6);
     Low_Byte = Pulse6&0xff;
     High_Byte = (Pulse6>>8)&0xff;
-    buffer6[1] = (static_cast<int>(Low_Byte));
-    buffer6[2] = (static_cast<int>(High_Byte));
+    buffer6[1] = ((char)Low_Byte);
+    buffer6[2] = ((char)High_Byte);
     if((robot.joint6_buf[i] - robot.joint6_buf[i-1]) > 0)
         buffer6[3] = 0x01;
     else
