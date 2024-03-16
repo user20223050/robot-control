@@ -9,8 +9,8 @@ QT          += core
 QT          += serialport
 #INCLUDEPATH += E:\dask\move_object_capture_c\eigen-3.4.0\eigen-3.4.0\Eigen
 #INCLUDEPATH += E:\dask\move_object_capture_c\qpOASES-master\qpOASES-master\include
-INCLUDEPATH += /home/ni/move_object_capture_1/eigen-3.4.0/eigen-3.4.0/Eigen
-INCLUDEPATH += /home/ni/move_object_capture_1/qpOASES-master/qpOASES-master/include
+INCLUDEPATH += /home/ni/code-git/move_object_capture_zyz/eigen-3.4.0/eigen-3.4.0/Eigen
+INCLUDEPATH += /home/ni/code-git/move_object_capture_zyz/qpOASES-master/qpOASES-master/include
 CONFIG += resources_big
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
