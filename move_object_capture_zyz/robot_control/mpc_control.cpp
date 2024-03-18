@@ -56,6 +56,8 @@ float MPC_Control::Prediction(const MatrixXd &x_k, const MatrixXd &E, const Matr
 {
 //    VectorXd U_k = VectorXd::Zero(NP);
     MatrixXd mid = E*x_k;
+    real_t lb[15];
+    real_t ub[15];
     QProblem example(15,0);
     Options options;
     example.setOptions( options );
@@ -78,8 +80,18 @@ float MPC_Control::Prediction(const MatrixXd &x_k, const MatrixXd &E, const Matr
     for(int i = 0;i < 15;i++) {
         g[i] = mid(i,0);
     }
-    real_t lb[15] = {-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP,-LIMIT_DDDAP};
-    real_t ub[15] = {LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP,LIMIT_DDDAP};
+    if(dasign == 1) {
+        for(uint8_t i = 0; i < 15; i++) {
+            lb[i] = -LIMIT_DDDAP;
+            ub[i] = LIMIT_DDDAP;
+        }
+    }
+    if(dasign == 2) {
+        for(uint8_t i = 0; i < 15; i++) {
+            lb[i] = -LIMIT_DDDANGLE;
+            ub[i] = LIMIT_DDDANGLE;
+        }
+    }
     /* Solve first QP. */
     int_t nWSR = 50;
     example.init( Hh,g,NULL,lb,ub,NULL,NULL, nWSR );
@@ -92,17 +104,16 @@ float MPC_Control::Prediction(const MatrixXd &x_k, const MatrixXd &E, const Matr
 
 void MPC_Control::Refresh_Error(Robot &robot, mobile_pose &mobile)
 {
-
-     X_Error(0,0) = round((mobile.X_point_target -  robot.X_robot_point_R)*1)/1;
+     X_Error(0,0) = round((mobile.X_point_target -  robot.X_robot_point_R)*1);
      X_Error(1,0) = mobile.X_speed_target - robot.X_robot_dpoint_R;
      X_Error(2,0) = mobile.X_dspeed_target - robot.X_robot_ddpoint_R;//加速度是必须的
-     Y_Error(0,0) = round((mobile.Y_point_target -   robot.Y_robot_point_R)*1)/1;
+     Y_Error(0,0) = round((mobile.Y_point_target -   robot.Y_robot_point_R)*1);
      Y_Error(1,0) = mobile.Y_speed_target -  robot.Y_robot_dpoint_R;
      Y_Error(2,0) = mobile.Y_dspeed_target -  robot.Y_robot_ddpoint_R;
-     Z_Error(0,0) = round((mobile.Z_point_target -  robot.Z_robot_point_R)*1)/1;
+     Z_Error(0,0) = round((mobile.Z_point_target -  robot.Z_robot_point_R)*1);
      Z_Error(1,0) = mobile.Z_speed_target - robot.Z_robot_dpoint_R;
      Z_Error(2,0) = mobile.Z_dspeed_target - robot.Z_robot_ddpoint_R;
-     J4_Error(0,0) = mobile.Joint_4_angle_T - robot.Joint_4_angle_R;
+     J4_Error(0,0) = (mobile.Joint_4_angle_T - robot.Joint_4_angle_R);
      J4_Error(1,0) = mobile.Joint_4_dangle_T - robot.Joint_4_speed_R;
      J4_Error(2,0) = mobile.Joint_4_ddangle_T - robot.Joint_4_dspeed_R;
      J5_Error(0,0) = mobile.Joint_5_angle_T - robot.Joint_5_angle_R;
@@ -206,7 +217,7 @@ void MPC_Control::Calculate_Out_Z(float U, Robot &robot,Slave_Copmputer& F407)
 
 void MPC_Control::Calculate_Out_J4(float U, Robot &robot)
 {
-    robot.Joint_4_dspeed_C -= (U)*0.05;
+    robot.Joint_4_dspeed_C -= U*0.05;
     if(robot.Joint_4_dspeed_C > limit*LIMIT_DDANGLE)
         robot.Joint_4_dspeed_C = limit*LIMIT_DDANGLE;
     if(robot.Joint_4_dspeed_C < -limit*LIMIT_DDANGLE)
@@ -227,7 +238,7 @@ void MPC_Control::Calculate_Out_J4(float U, Robot &robot)
 
 void MPC_Control::Calculate_Out_J5(float U, Robot &robot)
 {
-    robot.Joint_5_dspeed_C -= (U)*0.05;
+    robot.Joint_5_dspeed_C -= U*0.05;
     if(robot.Joint_5_dspeed_C > limit*LIMIT_DDANGLE)
         robot.Joint_5_dspeed_C = limit*LIMIT_DDANGLE;
     if(robot.Joint_5_dspeed_C < -limit*LIMIT_DDANGLE)
@@ -247,7 +258,7 @@ void MPC_Control::Calculate_Out_J5(float U, Robot &robot)
 
 void MPC_Control::Calculate_Out_J6(float U, Robot &robot)
 {
-    robot.Joint_6_dspeed_C -= (U)*0.05;
+    robot.Joint_6_dspeed_C -= U*0.05;
     if(robot.Joint_6_dspeed_C > limit*LIMIT_DDANGLE)
         robot.Joint_6_dspeed_C = limit*LIMIT_DDANGLE;
     if(robot.Joint_6_dspeed_C < -limit*LIMIT_DDANGLE)

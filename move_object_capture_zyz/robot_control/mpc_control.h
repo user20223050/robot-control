@@ -17,26 +17,31 @@ class Slave_Copmputer;
 class mobile_pose;
 
 #define LIMIT_DDDAP   50000
-#define LIMIT_DDANGLE   5
-#define LIMIT_DANGLE    1
 #define LIMIT_DDPOINT  5000
 #define LIMIT_DPOINT    150//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
+#define LIMIT_DDDANGLE  5000
+#define LIMIT_DDANGLE   2
+#define LIMIT_DANGLE    0.5
+
 
 class MPC_Control
 {
     friend class Slave_Copmputer;
 public:
-     MatrixXd E,H;
-     VectorXd X_Error;
-     VectorXd Y_Error;
-     VectorXd Z_Error;
-     VectorXd J4_Error;
-     VectorXd J5_Error;
-     VectorXd J6_Error;
-     int N;//MPC预测的步数
-     uint8_t follow_succeed;
-     //起步阶段限制加速度
-     float limit;
+
+    MatrixXd E,H;
+    VectorXd X_Error;
+    VectorXd Y_Error;
+    VectorXd Z_Error;
+    VectorXd J4_Error;
+    VectorXd J5_Error;
+    VectorXd J6_Error;
+    int N;//MPC预测的步数
+    uint8_t follow_succeed;
+    //起步阶段限制加速度
+    float limit;
+    /*位置和角度最大加加速度标志*/
+    unsigned char dasign;
 public:
     MPC_Control();
     float Prediction (const MatrixXd& x_k, const MatrixXd& E, const MatrixXd& H, int N);

@@ -117,7 +117,8 @@ void Widget::serialPortReadyRead_Slot()
         ui->MoveObjEdit->appendPlainText(MoveObj);
         QString robot_tip = QString::number(follow_num) + ":" + "X" + ":" + QString::number(round(robot.X_tool_point_R*1)/1) + "," + "Y" + ":" + QString::number(round(robot.Y_tool_point_R*1)/1) + "," + "Z" + ":" + QString::number(round(robot.Z_tool_point_R*1)/1);
         ui->recvEdit->appendPlainText(robot_tip);
-        ui->ErrorEdit->appendPlainText(QString::number(follow_num) + ":" + "Xerror" + ":" + QString::number(mpc.X_Error(0,0)) + "," + "Yerror" + ":" + QString::number(mpc.Y_Error(0,0)) + "," + "Zerror" + ":" + QString::number(mpc.Z_Error(0,0))+ "," + "XAerror" + ":" + QString::number(mpc.J4_Error(0,0)) + "," + "YAerror" + ":" + QString::number(mpc.J5_Error(0,0)) + "," + "ZAerror" + ":" + QString::number(mpc.J6_Error(0,0)));
+//        ui->ErrorEdit->appendPlainText(QString::number(follow_num) + ":" + "Xerror" + ":" + QString::number(mpc.X_Error(0,0)) + "," + "Yerror" + ":" + QString::number(mpc.Y_Error(0,0)) + "," + "Zerror" + ":" + QString::number(mpc.Z_Error(0,0))+ "," + "XAerror" + ":" + QString::number(mpc.J4_Error(0,0)) + "," + "YAerror" + ":" + QString::number(mpc.J5_Error(0,0)) + "," + "ZAerror" + ":" + QString::number(mpc.J6_Error(0,0)));
+        ui->ErrorEdit->appendPlainText(QString::number(follow_num) + ":" + "Xerror" + ":" + QString::number(round(mobile.X_point_OBJ_Real*1)/1 - round(robot.X_tool_point_R*1)/1) + "," + "Yerror" + ":" + QString::number(round(mobile.Y_point_OBJ_Real*1)/1 - round(robot.Y_tool_point_R*1)/1) + "," + "Zerror" + ":" + QString::number(round(mobile.Z_point_OBJ_Real*1)/1 - round(robot.Z_tool_point_R*1)/1));
         ui->Joint1Slider->setValue(robot.Joint_1_angle_R*180/(M_PI));
         ui->Joint2Slider->setValue(robot.Joint_2_angle_R*180/(M_PI));
         ui->Joint3Slider->setValue(robot.Joint_3_angle_R*180/(M_PI));

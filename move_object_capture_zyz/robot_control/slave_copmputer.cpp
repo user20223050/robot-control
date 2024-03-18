@@ -201,6 +201,7 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
 {
     mobile.refresh_object();
     mobile.reflash_target_f();
+    mpc.dasign = 1;
     float u_x = mpc.Prediction(mpc.X_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_y = mpc.Prediction(mpc.Y_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_z = mpc.Prediction(mpc.Z_Error.col(0), mpc.E,mpc.H, mpc.N);
@@ -214,6 +215,7 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
         serialPort->write(reinterpret_cast< const char *>(STOP));
     }
     mobile.reflash_target_s(robot);
+    mpc.dasign = 2;
     float u_J4 = mpc.Prediction(mpc.J4_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_J5 = mpc.Prediction(mpc.J5_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_J6 = mpc.Prediction(mpc.J6_Error.col(0), mpc.E,mpc.H, mpc.N);
