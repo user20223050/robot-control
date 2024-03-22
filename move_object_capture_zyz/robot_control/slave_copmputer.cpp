@@ -66,11 +66,29 @@ Slave_Copmputer::Slave_Copmputer()//帧格式[帧头 脉冲频率*2 旋转方向 CRC校验 帧尾
 
 void Slave_Copmputer::calculate_pulse(Robot &robot)
 {
+    if(robot.Joint_1_speed_R == 0)
+        pulse1 = 0xffff;
+    else
     pulse1 = 42000000*(2*M_PI)/(abs(robot.Joint_1_speed_R)*6000*robot.Z1);//计算脉冲频率 50MS计算一次
+    if(robot.Joint_2_speed_R == 0)
+        pulse2 = 0xffff;
+    else
     pulse2 = 42000000*(2*M_PI)/(abs(robot.Joint_2_speed_R)*6000*robot.Z2);
+    if(robot.Joint_3_speed_R == 0)
+        pulse3 = 0xffff;
+    else
     pulse3 = 42000000*(2*M_PI)/(abs(robot.Joint_3_speed_R)*6000*robot.Z3);
+    if(robot.Joint_4_speed_R == 0)
+        pulse4 = 0xffff;
+    else
     pulse4 = 42000000*(2*M_PI)/(abs(robot.Joint_4_speed_R)*6000*robot.Z4);
+    if(robot.Joint_5_speed_R == 0)
+        pulse5 = 0xffff;
+    else
     pulse5 = 42000000*(2*M_PI)/(abs(robot.Joint_5_speed_R)*6000*robot.Z5);
+    if(robot.Joint_6_speed_R == 0)
+        pulse6 = 0xffff;
+    else
     pulse6 = 42000000*(2*M_PI)/(abs(robot.Joint_6_speed_R)*6000*robot.Z6);
 
     if(pulse1 == 0 || pulse1 > 65535)
