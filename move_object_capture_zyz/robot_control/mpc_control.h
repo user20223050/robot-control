@@ -16,12 +16,12 @@ class Robot;
 class Slave_Copmputer;
 class mobile_pose;
 
-#define LIMIT_DDDAP   50000
+#define LIMIT_DDDAP    50000
 #define LIMIT_DDPOINT  5000
-#define LIMIT_DPOINT    150//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
-#define LIMIT_DDDANGLE  5000
-#define LIMIT_DDANGLE   2
-#define LIMIT_DANGLE    0.5
+#define LIMIT_DPOINT   150//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
+#define LIMIT_DDDANGLE 5000
+#define LIMIT_DDANGLE  3
+#define LIMIT_DANGLE   0.3
 
 
 class MPC_Control
@@ -45,12 +45,12 @@ public:
 public:
     MPC_Control();
     float Prediction (const MatrixXd& x_k, const MatrixXd& E, const MatrixXd& H, int N);
-    void Calculate_Out_X(float U,Robot &robot,Slave_Copmputer& F407);
-    void Calculate_Out_Y(float U,Robot &robot,Slave_Copmputer& F407);
-    void Calculate_Out_Z(float U,Robot &robot,Slave_Copmputer& F407);
-    void Calculate_Out_J4(float U,Robot &robot);
-    void Calculate_Out_J5(float U,Robot &robot);
-    void Calculate_Out_J6(float U,Robot &robot);
+    void Calculate_Out_X(float U,Robot &robot,Slave_Copmputer& F407,mobile_pose &mobile);
+    void Calculate_Out_Y(float U,Robot &robot,Slave_Copmputer& F407,mobile_pose &mobile);
+    void Calculate_Out_Z(float U,Robot &robot,Slave_Copmputer& F407,mobile_pose &mobile);
+    void Calculate_Out_J4(float U,Robot &robot,mobile_pose &mobile);
+    void Calculate_Out_J5(float U,Robot &robot,mobile_pose &mobile);
+    void Calculate_Out_J6(float U,Robot &robot,mobile_pose &mobile);
     void Refresh_Error(Robot &robot,mobile_pose &mobile);
 };
 

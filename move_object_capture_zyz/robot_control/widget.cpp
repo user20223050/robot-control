@@ -37,9 +37,9 @@ Widget::~Widget()
 {
     F407.serialPort->write(F407.STOP,4);
     F407.stop_sign = 1;
-    mpc.Calculate_Out_X(0,robot,F407);
-    mpc.Calculate_Out_Y(0,robot,F407);
-    mpc.Calculate_Out_Z(0,robot,F407);
+//    mpc.Calculate_Out_X(0,robot,F407,mobile);
+//    mpc.Calculate_Out_Y(0,robot,F407,mobile);
+//    mpc.Calculate_Out_Z(0,robot,F407,mobile);
     delete ui;
 }
 /*50ms进入一次该程序*/
@@ -89,9 +89,12 @@ void Widget::serialPortReadyRead_Slot()
             follow_num = 0;
             F407.serialPort->write(F407.STOP,4);
             F407.stop_sign = 1;
-            mpc.Calculate_Out_X(0,robot,F407);
-            mpc.Calculate_Out_Y(0,robot,F407);
-            mpc.Calculate_Out_Z(0,robot,F407);
+            mpc.Calculate_Out_X(0,robot,F407,mobile);
+            mpc.Calculate_Out_Y(0,robot,F407,mobile);
+            mpc.Calculate_Out_Z(0,robot,F407,mobile);
+            mpc.Calculate_Out_J4(0,robot,mobile);
+            mpc.Calculate_Out_J5(0,robot,mobile);
+            mpc.Calculate_Out_J6(0,robot,mobile);
         }
         if(F407.Init_sign == 1) {
             QString init_sign = {"INIT OK"};
@@ -103,9 +106,12 @@ void Widget::serialPortReadyRead_Slot()
             follow_num = 0;
             F407.serialPort->write(F407.STOP,4);
             F407.stop_sign = 1;
-            mpc.Calculate_Out_X(0,robot,F407);
-            mpc.Calculate_Out_Y(0,robot,F407);
-            mpc.Calculate_Out_Z(0,robot,F407);
+            mpc.Calculate_Out_X(0,robot,F407,mobile);
+            mpc.Calculate_Out_Y(0,robot,F407,mobile);
+            mpc.Calculate_Out_Z(0,robot,F407,mobile);
+            mpc.Calculate_Out_J4(0,robot,mobile);
+            mpc.Calculate_Out_J5(0,robot,mobile);
+            mpc.Calculate_Out_J6(0,robot,mobile);
         }
     }
     /*状态3跟随物体状态*/
@@ -152,9 +158,9 @@ void Widget::on_closeBt_clicked()
 {
     F407.serialPort->write(F407.STOP,4);
     F407.stop_sign = 1;
-    mpc.Calculate_Out_X(0,robot,F407);
-    mpc.Calculate_Out_Y(0,robot,F407);
-    mpc.Calculate_Out_Z(0,robot,F407);
+    mpc.Calculate_Out_X(0,robot,F407,mobile);
+    mpc.Calculate_Out_Y(0,robot,F407,mobile);
+    mpc.Calculate_Out_Z(0,robot,F407,mobile);
     F407.serialPort->close();
 }
 

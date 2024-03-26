@@ -302,12 +302,12 @@ void Robot::get_joint_speed_second(void)
         Joint_6_speed_R = -6;
 //    if(Joint_1_speed_R ==0 && Joint_2_speed_R == 0 && Joint_3_speed_R == 0)
 //        Joint_4_speed_R = Joint_5_speed_R = Joint_6_speed_R = 0;
-    std::cout<<"Joint_4_angle_R = "<<Joint_4_angle_R<<std::endl;
-    std::cout<<"Joint_5_angle_R = "<<Joint_5_angle_R<<std::endl;
-    std::cout<<"Joint_6_angle_R = "<<Joint_6_angle_R<<std::endl;
-    std::cout<<"Joint_4_speed_R = "<<Joint_4_speed_R<<std::endl;
-    std::cout<<"Joint_5_speed_R = "<<Joint_5_speed_R<<std::endl;
-    std::cout<<"Joint_6_speed_R = "<<Joint_6_speed_R<<std::endl;
+//    std::cout<<"Joint_4_angle_R = "<<Joint_4_angle_R<<std::endl;
+//    std::cout<<"Joint_5_angle_R = "<<Joint_5_angle_R<<std::endl;
+//    std::cout<<"Joint_6_angle_R = "<<Joint_6_angle_R<<std::endl;
+//    std::cout<<"Joint_4_speed_R = "<<Joint_4_speed_R<<std::endl;
+//    std::cout<<"Joint_5_speed_R = "<<Joint_5_speed_R<<std::endl;
+//    std::cout<<"Joint_6_speed_R = "<<Joint_6_speed_R<<std::endl;
 }
 
 void Robot::Back_Init_Position()

@@ -69,16 +69,33 @@ void mobile_pose::conversion_coord_s(Robot &robot)
               0, 0, 0,   1;
     T6_0 = object * Tt_6.inverse();//由世界坐标系中物体的姿态Tt_0转换到世界坐标系中T6_0的姿态t为tool工具坐标系
 
-    T1_0 << cos(robot.Joint_1_angle_R), -sin(robot.Joint_1_angle_R), 0, 0,
-            sin(robot.Joint_1_angle_R),  cos(robot.Joint_1_angle_R), 0, 0,
+//    T1_0 << cos(robot.Joint_1_angle_R), -sin(robot.Joint_1_angle_R), 0, 0,
+//            sin(robot.Joint_1_angle_R),  cos(robot.Joint_1_angle_R), 0, 0,
+//                                     0,                           0, 1, 0,
+//                                     0,                           0, 0, 1;
+//    T2_1 << cos(robot.Joint_2_angle_R), -sin(robot.Joint_2_angle_R), 0, 0,
+//                                     0,                           0, 1, 0,
+//           -sin(robot.Joint_2_angle_R), -cos(robot.Joint_2_angle_R), 0, 0,
+//                                     0,                           0, 0, 1;
+//    T3_2 << cos(robot.Joint_3_angle_R), -sin(robot.Joint_3_angle_R), 0, 0,
+//            sin(robot.Joint_3_angle_R),  cos(robot.Joint_3_angle_R), 0, 0,
+//                                     0,                           0, 1, 0,
+//                                     0,                           0, 0, 1;
+//    T4_X <<                          1,                           0, 0, 0,
+//                                     0,                           0, 1, 0,
+//                                     0,                          -1, 0, 0,
+//                                     0,                           0, 0, 1;
+
+    T1_0 << cos(robot.Joint_1_angle_C), -sin(robot.Joint_1_angle_C), 0, 0,
+            sin(robot.Joint_1_angle_C),  cos(robot.Joint_1_angle_C), 0, 0,
                                      0,                           0, 1, 0,
                                      0,                           0, 0, 1;
-    T2_1 << cos(robot.Joint_2_angle_R), -sin(robot.Joint_2_angle_R), 0, 0,
+    T2_1 << cos(robot.Joint_2_angle_C), -sin(robot.Joint_2_angle_C), 0, 0,
                                      0,                           0, 1, 0,
-           -sin(robot.Joint_2_angle_R), -cos(robot.Joint_2_angle_R), 0, 0,
+           -sin(robot.Joint_2_angle_C), -cos(robot.Joint_2_angle_C), 0, 0,
                                      0,                           0, 0, 1;
-    T3_2 << cos(robot.Joint_3_angle_R), -sin(robot.Joint_3_angle_R), 0, 0,
-            sin(robot.Joint_3_angle_R),  cos(robot.Joint_3_angle_R), 0, 0,
+    T3_2 << cos(robot.Joint_3_angle_C), -sin(robot.Joint_3_angle_C), 0, 0,
+            sin(robot.Joint_3_angle_C),  cos(robot.Joint_3_angle_C), 0, 0,
                                      0,                           0, 1, 0,
                                      0,                           0, 0, 1;
     T4_X <<                          1,                           0, 0, 0,
@@ -111,18 +128,40 @@ void mobile_pose::reflash_target_f()
     static float X_speed_target_old = X_speed_target;
     static float Y_speed_target_old = Y_speed_target;
     static float Z_speed_target_old = Z_speed_target;
+    static float X_dspeed_target_old = X_dspeed_target;
+    static float Y_dspeed_target_old = Y_dspeed_target;
+    static float Z_dspeed_target_old = Z_dspeed_target;
+
     X_speed_target = (X_point_target - X_point_target_old)/0.05;
     Y_speed_target = (Y_point_target - Y_point_target_old)/0.05;
     Z_speed_target = (Z_point_target - Z_point_target_old)/0.05;
     X_dspeed_target = (X_speed_target - X_speed_target_old)/0.05;
     Y_dspeed_target = (Y_speed_target - Y_speed_target_old)/0.05;
     Z_dspeed_target = (Z_speed_target - Z_speed_target_old)/0.05;
+    X_ddspeed_target = (X_dspeed_target - X_dspeed_target_old)/0.05;
+    Y_ddspeed_target = (Y_dspeed_target - Y_dspeed_target_old)/0.05;
+    Z_ddspeed_target = (Z_dspeed_target - Z_dspeed_target_old)/0.05;
+    if(X_ddspeed_target > 10000)
+        X_ddspeed_target = 10000;
+    if(X_ddspeed_target < -10000)
+        X_ddspeed_target = -10000;
+    if(Y_ddspeed_target > 10000)
+        Y_ddspeed_target = 10000;
+    if(Y_ddspeed_target < -10000)
+        Y_ddspeed_target = -10000;
+    if(Z_ddspeed_target > 10000)
+        Z_ddspeed_target = 10000;
+    if(Z_ddspeed_target < -10000)
+        Z_ddspeed_target = -10000;
     X_point_target_old = X_point_target;
     Y_point_target_old = Y_point_target;
     Z_point_target_old = Z_point_target;
     X_speed_target_old = X_speed_target;
     Y_speed_target_old = Y_speed_target;
     Z_speed_target_old = Z_speed_target;
+    X_dspeed_target_old = X_dspeed_target;
+    Y_dspeed_target_old = Y_dspeed_target;
+    Z_dspeed_target_old = Z_dspeed_target;
 }
 void mobile_pose::reflash_target_s(Robot &robot)
 {
@@ -133,6 +172,9 @@ void mobile_pose::reflash_target_s(Robot &robot)
     static float Joint_4_dangle_T_old = Joint_4_dangle_T;
     static float Joint_5_dangle_T_old = Joint_5_dangle_T;
     static float Joint_6_dangle_T_old = Joint_6_dangle_T;
+    static float Joint_4_ddangle_T_old = Joint_4_ddangle_T;
+    static float Joint_5_ddangle_T_old = Joint_5_ddangle_T;
+    static float Joint_6_ddangle_T_old = Joint_6_ddangle_T;
 
     Joint_4_dangle_T = (Joint_4_angle_T - Joint_4_angle_T_old)/0.05;
     Joint_5_dangle_T = (Joint_5_angle_T - Joint_5_angle_T_old)/0.05;
@@ -140,13 +182,21 @@ void mobile_pose::reflash_target_s(Robot &robot)
     Joint_4_ddangle_T = (Joint_4_dangle_T - Joint_4_dangle_T_old)/0.05;
     Joint_5_ddangle_T = (Joint_5_dangle_T - Joint_5_dangle_T_old)/0.05;
     Joint_6_ddangle_T = (Joint_6_dangle_T - Joint_6_dangle_T_old)/0.05;
-
+    Joint_4_dddangle_T = (Joint_4_ddangle_T - Joint_4_ddangle_T_old)/0.05;
+    Joint_5_dddangle_T = (Joint_5_ddangle_T - Joint_5_ddangle_T_old)/0.05;
+    Joint_6_dddangle_T = (Joint_6_ddangle_T - Joint_6_ddangle_T_old)/0.05;
+    std::cout<<"Joint_4_dddangle_T = "<<Joint_4_dddangle_T<<std::endl;
+    std::cout<<"Joint_5_dddangle_T = "<<Joint_5_dddangle_T<<std::endl;
+    std::cout<<"Joint_6_dddangle_T = "<<Joint_6_dddangle_T<<std::endl;
     Joint_4_angle_T_old = Joint_4_angle_T;
     Joint_5_angle_T_old = Joint_5_angle_T;
     Joint_6_angle_T_old = Joint_6_angle_T;
     Joint_4_dangle_T_old = Joint_4_dangle_T;
     Joint_5_dangle_T_old = Joint_5_dangle_T;
     Joint_6_dangle_T_old = Joint_6_dangle_T;
+    Joint_4_ddangle_T_old = Joint_4_ddangle_T;
+    Joint_5_ddangle_T_old = Joint_5_ddangle_T;
+    Joint_6_ddangle_T_old = Joint_6_ddangle_T;
 }
 void mobile_pose::kalman_forecast()
 {

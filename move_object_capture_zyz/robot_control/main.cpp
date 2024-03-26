@@ -22,6 +22,9 @@ int main(int argc, char *argv[])
     printf("creat share memory sucess shmid=%d\n",shmid);
     p = (float *)shmat(shmid,NULL,0);//映射到用户空间
     robot.Robot_Set_Work_position();
+    mobile.refresh_object();
+    mobile.reflash_target_f();
+    mobile.reflash_target_s(robot);
     F407.joint_rotate_direction(robot);
 //    mpc.Refresh_Error(robot,mobile);
 //    mobile.reflash_target_f();

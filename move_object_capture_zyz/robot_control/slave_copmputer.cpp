@@ -223,9 +223,9 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
     float u_x = mpc.Prediction(mpc.X_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_y = mpc.Prediction(mpc.Y_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_z = mpc.Prediction(mpc.Z_Error.col(0), mpc.E,mpc.H, mpc.N);
-    mpc.Calculate_Out_X(u_x,robot,*this);
-    mpc.Calculate_Out_Y(u_y,robot,*this);
-    mpc.Calculate_Out_Z(u_z,robot,*this);
+    mpc.Calculate_Out_X(u_x,robot,*this,mobile);
+    mpc.Calculate_Out_Y(u_y,robot,*this,mobile);
+    mpc.Calculate_Out_Z(u_z,robot,*this,mobile);
     robot.Three_Ik();
     robot.get_joint_speed_first();
     robot.Get_Joint_Angle_first();
@@ -237,9 +237,9 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
     float u_J4 = mpc.Prediction(mpc.J4_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_J5 = mpc.Prediction(mpc.J5_Error.col(0), mpc.E,mpc.H, mpc.N);
     float u_J6 = mpc.Prediction(mpc.J6_Error.col(0), mpc.E,mpc.H, mpc.N);
-    mpc.Calculate_Out_J4(u_J4,robot);
-    mpc.Calculate_Out_J5(u_J5,robot);
-    mpc.Calculate_Out_J6(u_J6,robot);
+    mpc.Calculate_Out_J4(u_J4,robot,mobile);
+    mpc.Calculate_Out_J5(u_J5,robot,mobile);
+    mpc.Calculate_Out_J6(u_J6,robot,mobile);
     robot.get_joint_speed_second();
     robot.Get_Joint_Angle_second();
     robot.FK();

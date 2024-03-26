@@ -37,6 +37,10 @@ public:
     float X_dspeed_target;
     float Y_dspeed_target;
     float Z_dspeed_target;
+    //需要跟随的目标加加速度
+    float X_ddspeed_target;
+    float Y_ddspeed_target;
+    float Z_ddspeed_target;
 
     //需要跟随的目标角度
     float Joint_4_angle_T;
@@ -50,6 +54,10 @@ public:
     float Joint_4_ddangle_T;
     float Joint_5_ddangle_T;
     float Joint_6_ddangle_T;
+    //目标角加加速度
+    float Joint_4_dddangle_T;
+    float Joint_5_dddangle_T;
+    float Joint_6_dddangle_T;
 
 public:
     mobile_pose();
