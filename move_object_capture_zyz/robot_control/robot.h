@@ -29,26 +29,26 @@ public:
     double Joint_5_angle_R;
     double Joint_6_angle_R;
     //实际关节角速度
-    float Joint_1_speed_R;
-    float Joint_2_speed_R;
-    float Joint_3_speed_R;
-    float Joint_4_speed_R;
-    float Joint_5_speed_R;
-    float Joint_6_speed_R;
+    double Joint_1_speed_R;
+    double Joint_2_speed_R;
+    double Joint_3_speed_R;
+    double Joint_4_speed_R;
+    double Joint_5_speed_R;
+    double Joint_6_speed_R;
     //实际关节角加加速度
-    float Joint_1_dspeed_R;
-    float Joint_2_dspeed_R;
-    float Joint_3_dspeed_R;
-    float Joint_4_dspeed_R;
-    float Joint_5_dspeed_R;
-    float Joint_6_dspeed_R;
+    double Joint_1_dspeed_R;
+    double Joint_2_dspeed_R;
+    double Joint_3_dspeed_R;
+    double Joint_4_dspeed_R;
+    double Joint_5_dspeed_R;
+    double Joint_6_dspeed_R;
 
-    float Joint_4_speed_C;
-    float Joint_5_speed_C;
-    float Joint_6_speed_C;
-    float Joint_4_dspeed_C;
-    float Joint_5_dspeed_C;
-    float Joint_6_dspeed_C;
+    double Joint_4_speed_C;
+    double Joint_5_speed_C;
+    double Joint_6_speed_C;
+    double Joint_4_dspeed_C;
+    double Joint_5_dspeed_C;
+    double Joint_6_dspeed_C;
     //计算夹具位置
     double X_tool_point_C;
     double Y_tool_point_C;

@@ -288,10 +288,10 @@ void Robot::get_joint_speed_second(void)
     Joint_5_speed_R = (Joint_5_angle_C-Joint_5_angle_R)/0.05;
     Joint_6_speed_R = (Joint_6_angle_C-Joint_6_angle_R)/0.05;
     //电机段最大3000rpm/min == 314rad/s == speed*z
-    if(Joint_4_speed_R > 1.5)
-        Joint_4_speed_R = 1.5;
-    if(Joint_4_speed_R < -1.5)
-        Joint_4_speed_R = -1.5;
+    if(Joint_4_speed_R > 2)
+        Joint_4_speed_R = 2;
+    if(Joint_4_speed_R < -2)
+        Joint_4_speed_R = -2;
     if(Joint_5_speed_R > 3.2)
         Joint_5_speed_R = 3.2;
     if(Joint_5_speed_R < -3.2)
@@ -302,9 +302,10 @@ void Robot::get_joint_speed_second(void)
         Joint_6_speed_R = -6;
 //    if(Joint_1_speed_R ==0 && Joint_2_speed_R == 0 && Joint_3_speed_R == 0)
 //        Joint_4_speed_R = Joint_5_speed_R = Joint_6_speed_R = 0;
-//    std::cout<<"Joint_4_angle_R = "<<Joint_4_angle_R<<std::endl;
-//    std::cout<<"Joint_5_angle_R = "<<Joint_5_angle_R<<std::endl;
-//    std::cout<<"Joint_6_angle_R = "<<Joint_6_angle_R<<std::endl;
+    std::cout<<"Joint_4_angle_R = "<<Joint_4_angle_R<<std::endl;
+    std::cout<<"Joint_5_angle_R = "<<Joint_5_angle_R<<std::endl;
+    std::cout<<"Joint_6_angle_R = "<<Joint_6_angle_R<<std::endl;
+    std::cout<<"\n "<<std::endl;
 //    std::cout<<"Joint_4_speed_R = "<<Joint_4_speed_R<<std::endl;
 //    std::cout<<"Joint_5_speed_R = "<<Joint_5_speed_R<<std::endl;
 //    std::cout<<"Joint_6_speed_R = "<<Joint_6_speed_R<<std::endl;

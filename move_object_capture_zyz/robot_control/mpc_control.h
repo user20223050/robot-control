@@ -15,14 +15,20 @@ using namespace qpOASES;
 class Robot;
 class Slave_Copmputer;
 class mobile_pose;
-
-#define LIMIT_DDDAP    50000
-#define LIMIT_DDPOINT  5000
-#define LIMIT_DPOINT   150//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
-#define LIMIT_DDDANGLE 5000
-#define LIMIT_DDANGLE  3
-#define LIMIT_DANGLE   0.3
-
+/*limit*/
+//#define LIMIT_DDDAP    50000
+//#define LIMIT_DDPOINT  5000
+//#define LIMIT_DPOINT   150//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
+//#define LIMIT_DDDANGLE 5000
+//#define LIMIT_DDANGLE  2.5
+//#define LIMIT_DANGLE   0.3
+/*no limit*/
+#define LIMIT_DDDAP    8888888
+#define LIMIT_DDPOINT  8888888
+#define LIMIT_DPOINT   8888888//需要*limit == 10 即需要扩大十倍即LIMIT_DPOINT 1500MM/S
+#define LIMIT_DDDANGLE 8888888
+#define LIMIT_DDANGLE  8888888
+#define LIMIT_DANGLE   0.5
 
 class MPC_Control
 {

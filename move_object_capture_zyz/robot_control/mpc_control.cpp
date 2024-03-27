@@ -113,15 +113,15 @@ void MPC_Control::Refresh_Error(Robot &robot, mobile_pose &mobile)
      Z_Error(0,0) = round((mobile.Z_point_target -  robot.Z_robot_point_R)*1);
      Z_Error(1,0) = mobile.Z_speed_target - robot.Z_robot_dpoint_R;
      Z_Error(2,0) = mobile.Z_dspeed_target - robot.Z_robot_ddpoint_R;
-     J4_Error(0,0) = (mobile.Joint_4_angle_T - robot.Joint_4_angle_R);
-     J4_Error(1,0) = mobile.Joint_4_dangle_T - robot.Joint_4_speed_R;
-     J4_Error(2,0) = mobile.Joint_4_ddangle_T - robot.Joint_4_dspeed_R;
-     J5_Error(0,0) = mobile.Joint_5_angle_T - robot.Joint_5_angle_R;
-     J5_Error(1,0) = mobile.Joint_5_dangle_T - robot.Joint_5_speed_R;
-     J5_Error(2,0) = mobile.Joint_5_ddangle_T - robot.Joint_5_dspeed_R;
-     J6_Error(0,0) = mobile.Joint_6_angle_T - robot.Joint_6_angle_R;
-     J6_Error(1,0) = mobile.Joint_6_dangle_T - robot.Joint_6_speed_R;
-     J6_Error(2,0) = mobile.Joint_6_ddangle_T - robot.Joint_6_dspeed_R;
+     J4_Error(0,0) = (mobile.Joint_4_angle_T - robot.Joint_4_angle_R)*10000;
+     J4_Error(1,0) = (mobile.Joint_4_dangle_T - robot.Joint_4_speed_R)*10000;
+     J4_Error(2,0) = (mobile.Joint_4_ddangle_T - robot.Joint_4_dspeed_R)*10000;
+     J5_Error(0,0) = (mobile.Joint_5_angle_T - robot.Joint_5_angle_R)*10000;
+     J5_Error(1,0) = (mobile.Joint_5_dangle_T - robot.Joint_5_speed_R)*10000;
+     J5_Error(2,0) = (mobile.Joint_5_ddangle_T - robot.Joint_5_dspeed_R)*10000;
+     J6_Error(0,0) = (mobile.Joint_6_angle_T - robot.Joint_6_angle_R)*10000;
+     J6_Error(1,0) = (mobile.Joint_6_dangle_T - robot.Joint_6_speed_R)*10000;
+     J6_Error(2,0) = (mobile.Joint_6_ddangle_T - robot.Joint_6_dspeed_R)*10000;
 }
 
 void MPC_Control::Calculate_Out_X(float U,Robot &robot,Slave_Copmputer& F407,mobile_pose &mobile)
@@ -218,7 +218,7 @@ void MPC_Control::Calculate_Out_Z(float U, Robot &robot,Slave_Copmputer& F407,mo
 void MPC_Control::Calculate_Out_J4(float U, Robot &robot,mobile_pose &mobile)
 {
 //    robot.Joint_4_dspeed_C += (mobile.Joint_4_dddangle_T-U)*0.05;
-    robot.Joint_4_dspeed_C -= U*0.05;
+    robot.Joint_4_dspeed_C -= U/10000*0.05;
     if(robot.Joint_4_dspeed_C > limit*LIMIT_DDANGLE)
         robot.Joint_4_dspeed_C = limit*LIMIT_DDANGLE;
     if(robot.Joint_4_dspeed_C < -limit*LIMIT_DDANGLE)
@@ -228,19 +228,21 @@ void MPC_Control::Calculate_Out_J4(float U, Robot &robot,mobile_pose &mobile)
         robot.Joint_4_speed_C = limit*LIMIT_DANGLE;
     if(robot.Joint_4_speed_C < -limit*LIMIT_DANGLE)
         robot.Joint_4_speed_C = -limit*LIMIT_DANGLE;
-//    if(abs(J4_Error[0]) < 2) {
-//        robot.Joint_4_speed_C = 0;
-//        robot.Joint_4_dspeed_C = 0;
-//    }
+    if(abs(J4_Error[0]) < 2) {
+        robot.Joint_4_speed_C = 0;
+        robot.Joint_4_dspeed_C = 0;
+    }
     robot.Joint_4_angle_C = (robot.Joint_4_angle_R + robot.Joint_4_speed_C*0.05);
 //    robot.Joint_4_angle_C = fmod((robot.FA_X_tool_angle_R + robot.FA_X_tool_dangle_C*0.05),2*M_PI);
-//    std::cout<<"FA_X_tool_angle_C ="<<robot.FA_X_tool_angle_C<<std::endl;
+    std::cout<<"J4U = "<<U<<std::endl;
+    std::cout<<"robot.Joint_4_speed_C = "<<robot.Joint_4_speed_C<<std::endl;
+    std::cout<<"\n "<<std::endl;
 }
 
 void MPC_Control::Calculate_Out_J5(float U, Robot &robot,mobile_pose &mobile)
 {
 //    robot.Joint_5_dspeed_C += (mobile.Joint_5_dddangle_T-U)*0.05;
-    robot.Joint_5_dspeed_C -= U*0.05;
+    robot.Joint_5_dspeed_C -= U/10000*0.05;
     if(robot.Joint_5_dspeed_C > limit*LIMIT_DDANGLE)
         robot.Joint_5_dspeed_C = limit*LIMIT_DDANGLE;
     if(robot.Joint_5_dspeed_C < -limit*LIMIT_DDANGLE)
@@ -250,18 +252,20 @@ void MPC_Control::Calculate_Out_J5(float U, Robot &robot,mobile_pose &mobile)
         robot.Joint_5_speed_C = limit*LIMIT_DANGLE;
     if(robot.Joint_5_speed_C < -limit*LIMIT_DANGLE)
         robot.Joint_5_speed_C = -limit*LIMIT_DANGLE;
-//    if(abs(J5_Error[0]) < 2) {
-//        robot.Joint_5_speed_C = 0;
-//        robot.Joint_5_dspeed_C = 0;
-//    }
+    if(abs(J5_Error[0]) < 2) {
+        robot.Joint_5_speed_C = 0;
+        robot.Joint_5_dspeed_C = 0;
+    }
     robot.Joint_5_angle_C = (robot.Joint_5_angle_R + robot.Joint_5_speed_C*0.05);
-//    std::cout<<"FA_Y_tool_angle_C = "<<robot.FA_Y_tool_angle_C<<std::endl;
+    std::cout<<"J5U = "<<U<<std::endl;
+    std::cout<<"robot.Joint_5_speed_C = "<<robot.Joint_5_speed_C<<std::endl;
+    std::cout<<"\n "<<std::endl;
 }
 
 void MPC_Control::Calculate_Out_J6(float U, Robot &robot,mobile_pose &mobile)
 {
 //    robot.Joint_6_dspeed_C += (mobile.Joint_6_dddangle_T-U)*0.05;
-    robot.Joint_6_dspeed_C -= U*0.05;
+    robot.Joint_6_dspeed_C -= U/10000*0.05;
     if(robot.Joint_6_dspeed_C > limit*LIMIT_DDANGLE)
         robot.Joint_6_dspeed_C = limit*LIMIT_DDANGLE;
     if(robot.Joint_6_dspeed_C < -limit*LIMIT_DDANGLE)
@@ -271,12 +275,14 @@ void MPC_Control::Calculate_Out_J6(float U, Robot &robot,mobile_pose &mobile)
         robot.Joint_6_speed_C = limit*LIMIT_DANGLE;
     if(robot.Joint_6_speed_C < -limit*LIMIT_DANGLE)
         robot.Joint_6_speed_C = -limit*LIMIT_DANGLE;
-//    if(abs(J6_Error[0]) < 2) {
-//        robot.Joint_6_speed_C = 0;
-//        robot.Joint_6_dspeed_C = 0;
-//    }
+    if(abs(J6_Error[0]) < 2) {
+        robot.Joint_6_speed_C = 0;
+        robot.Joint_6_dspeed_C = 0;
+    }
     robot.Joint_6_angle_C = (robot.Joint_6_angle_R + robot.Joint_6_speed_C*0.05);
-//    std::cout<<"FA_Z_tool_angle_C = "<<robot.FA_Z_tool_angle_C<<std::endl;
+    std::cout<<"J6U = "<<U<<std::endl;
+    std::cout<<"robot.Joint_6_speed_C = "<<robot.Joint_6_speed_C<<std::endl;
+    std::cout<<"\n "<<std::endl;
 }
 
 
