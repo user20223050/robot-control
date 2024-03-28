@@ -220,11 +220,107 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
     mobile.refresh_object();
     mobile.reflash_target_s();
     mpc.dasign = 2;
+    if(abs(mpc.J1_Error(0)) < 0.18)
+    {
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 2;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    else{
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 1;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    std::cout<<"mpc.run_state = "<<mpc.run_state<<std::endl;
     double u_J1 = mpc.Prediction(mpc.J1_Error.col(0), mpc.E,mpc.H, mpc.N);
+    if(abs(mpc.J2_Error(0)) < 0.18)
+    {
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 2;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    else{
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 1;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    std::cout<<"mpc.run_state = "<<mpc.run_state<<std::endl;
     double u_J2 = mpc.Prediction(mpc.J2_Error.col(0), mpc.E,mpc.H, mpc.N);
+    if(abs(mpc.J3_Error(0)) < 0.18)
+    {
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 2;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    else{
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 1;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    std::cout<<"mpc.run_state = "<<mpc.run_state<<std::endl;
     double u_J3 = mpc.Prediction(mpc.J3_Error.col(0), mpc.E,mpc.H, mpc.N);
+    if(abs(mpc.J4_Error(0)) < 0.18)
+    {
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 2;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    else{
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 1;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    std::cout<<"mpc.run_state = "<<mpc.run_state<<std::endl;
     double u_J4 = mpc.Prediction(mpc.J4_Error.col(0), mpc.E,mpc.H, mpc.N);
+    if(abs(mpc.J5_Error(0)) < 0.18)
+    {
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 2;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    else{
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 1;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    std::cout<<"mpc.run_state = "<<mpc.run_state<<std::endl;
     double u_J5 = mpc.Prediction(mpc.J5_Error.col(0), mpc.E,mpc.H, mpc.N);
+    if(abs(mpc.J6_Error(0)) < 0.18)
+    {
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 2;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    else{
+        uint8_t run_state_old = mpc.run_state;
+        mpc.run_state = 1;
+        if(run_state_old != mpc.run_state) {
+            mpc.change_weight();
+        }
+    }
+    std::cout<<"mpc.run_state = "<<mpc.run_state<<std::endl;
     double u_J6 = mpc.Prediction(mpc.J6_Error.col(0), mpc.E,mpc.H, mpc.N);
     mpc.Calculate_Out_X(u_J1,robot,*this,mobile);
     mpc.Calculate_Out_Y(u_J2,robot,*this,mobile);

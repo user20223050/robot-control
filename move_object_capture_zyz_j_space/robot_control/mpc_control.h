@@ -24,7 +24,7 @@ class MPC_Control
 {
     friend class Slave_Copmputer;
 public:
-
+    char run_state;
     MatrixXd E,H;
     VectorXd X_Error;
     VectorXd Y_Error;
@@ -43,6 +43,7 @@ public:
     unsigned char dasign;
 public:
     MPC_Control();
+    void change_weight(void);
     float Prediction (const MatrixXd& x_k, const MatrixXd& E, const MatrixXd& H, int N);
     void Calculate_Out_X(float U,Robot &robot,Slave_Copmputer& F407,mobile_pose &mobile);
     void Calculate_Out_Y(float U,Robot &robot,Slave_Copmputer& F407,mobile_pose &mobile);

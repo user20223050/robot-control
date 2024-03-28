@@ -2,8 +2,6 @@
 
 MPC_Control::MPC_Control():X_Error(3,1),Y_Error(3,1),Z_Error(3,1),J1_Error(3,1),J2_Error(3,1),J3_Error(3,1),J4_Error(3,1),J5_Error(3,1),J6_Error(3,1)
 {
-    //限制起步阶段加速度
-    limit = 0;
     //MPC控制
     MatrixXd A(3, 3);
     A << 1, 0.05, 0.00125, 0, 1, 0.05, 0, 0, 1;
@@ -52,6 +50,59 @@ MPC_Control::MPC_Control():X_Error(3,1),Y_Error(3,1),Z_Error(3,1),J1_Error(3,1),
     H = C.transpose() * Q_bar * C + R_bar;
 }
 
+void MPC_Control::change_weight(void)
+{
+    //MPC控制
+    MatrixXd A(3, 3);
+    A << 1, 0.05, 0.00125, 0, 1, 0.05, 0, 0, 1;
+    MatrixXd B(3, 1);
+    B << 2.083e-05, 0.00125, 0.05;
+    MatrixXd Q(3, 3);
+    if(run_state == 1)//位置跟随模式
+    Q << 100, 0, 0, 0, 10, 0, 0, 0, 1;
+    if(run_state == 2)//速度跟随模式
+    Q << 50, 0, 0, 0, 100, 0, 0, 0, 1;
+    MatrixXd F(3, 3);
+    F << 100, 0, 0, 0, 10, 0, 0, 0, 1;
+    double R = 0.1;
+    N = 15;
+    int n = A.rows();
+    int p = B.cols();
+    MatrixXd M((N + 1) * n, n);
+    M.topRows(n) = MatrixXd::Identity(n, n);
+    M.bottomRows(N * n).setZero();
+    MatrixXd C((N + 1) * n, N * p);
+    C.setZero();
+    MatrixXd tmp = MatrixXd::Identity(n, n);
+    for (int i = 1; i <= N; ++i) {
+        VectorXi rows = VectorXi::LinSpaced(n, i * n, (i + 1) * n - 1);
+        // 更新 C 矩阵
+        C.block(rows[0], 0, n, C.cols()) << tmp * B, C.block(rows[0] - n, 0, n, C.cols() - p);
+        // 更新 tmp
+        tmp = A * tmp;
+        // 更新 M 矩阵
+        M.block(rows[0], 0, n, M.cols()) = tmp;
+    }
+    // 将Q_bar初始化为具有Q重复N次和F作为最后一个块的块对角矩阵
+    Eigen::MatrixXd Q_bar = Eigen::MatrixXd::Zero(N * Q.rows() + F.rows(), N * Q.cols() + F.cols());
+    // 使用块对角结构填充Q_bar
+    for (int i = 0; i < N; ++i) {
+        Q_bar.block(i * Q.rows(), i * Q.cols(), Q.rows(), Q.cols()) = Q;
+    }
+    // 将最后一个块设置为F
+    Q_bar.block(N * Q.rows(), N * Q.cols(), F.rows(), F.cols()) = F;
+    // 初始化R_bar为具有R重复N次的Kronecker积
+    Eigen::MatrixXd R_bar = Eigen::MatrixXd::Zero(N, N);
+    // 计算Kronecker积
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < N; ++j) {
+            R_bar(i, i) = R;
+        }
+    }
+    E = C.transpose() * Q_bar * M;
+    H = C.transpose() * Q_bar * C + R_bar;
+
+}
 float MPC_Control::Prediction(const MatrixXd &x_k, const MatrixXd &E, const MatrixXd &H, int N)
 {
 //    VectorXd U_k = VectorXd::Zero(NP);
