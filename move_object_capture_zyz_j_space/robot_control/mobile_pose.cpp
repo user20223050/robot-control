@@ -10,9 +10,9 @@ mobile_pose::mobile_pose():object(4,4),Tc_c(4,4),Tc_0(4,4)
              -1,     0,     0,    0,
               0,    -1,     0,    0,
               0,     0,     0,    1;
-    Tc_0   << 0,     0,    -1,  1000,
+    Tc_0   << 0,     0,    -1,  800,
               1,     0,     0,    0,
-              0,    -1,     0,  200,
+              0,    -1,     0,    0,
               0,     0,     0,    1;
 //    Tc_c   << 1,     0,     0,    0,
 //              0, 0.866,   0.5,    0,
@@ -122,18 +122,18 @@ void mobile_pose::conversion_coord_s(void)
                                      0,                           0, 0, 1;
     T3_0 = T1_0*T2_1*T3_2*T4_X;
     T6_3 = (T3_0.inverse())*T6_0;
-    Joint_5_angle_T = round((atan2(sqrt(pow(T6_3(2,0),2) + pow(T6_3(2,1),2)),T6_3(2,2))) * 1000) / 1000;
+    Joint_5_angle_T = round((atan2(sqrt(pow(T6_3(2,0),2) + pow(T6_3(2,1),2)),T6_3(2,2))) * 10000) / 10000;
     if(round(((Joint_5_angle_T)*180/M_PI)*1)/1 == 0){
-        Joint_4_angle_T = round((0 + M_PI) * 1000) / 1000;
-        Joint_6_angle_T = round((atan2(-T6_3(0,1),T6_3(0,0)) + M_PI) * 1000) / 1000;
+        Joint_4_angle_T = round((0 + M_PI) * 10000) / 10000;
+        Joint_6_angle_T = round((atan2(-T6_3(0,1),T6_3(0,0)) + M_PI) * 10000) / 10000;
     }
     if(round(((Joint_5_angle_T)*180/M_PI)*1)/1 ==180){
-        Joint_4_angle_T = round((0 + M_PI) * 1000) / 1000;
-        Joint_6_angle_T = round((atan2(T6_3(0,1),-T6_3(0,0)) + M_PI) * 1000) / 1000;
+        Joint_4_angle_T = round((0 + M_PI) * 10000) / 10000;
+        Joint_6_angle_T = round((atan2(T6_3(0,1),-T6_3(0,0)) + M_PI) * 10000) / 10000;
     }
     if((round(((Joint_5_angle_T)*180/M_PI)*1)/1 != 0) && (round(((Joint_5_angle_T)*180/M_PI)*1)/1 !=180)) {
-        Joint_4_angle_T = round((atan2(T6_3(1,2)/sin(Joint_5_angle_T),T6_3(0,2)/sin(Joint_5_angle_T)) + M_PI) * 1000) / 1000;
-        Joint_6_angle_T = round((atan2(T6_3(2,1)/sin(Joint_5_angle_T),-T6_3(2,0)/sin(Joint_5_angle_T)) + M_PI) * 1000) / 1000;
+        Joint_4_angle_T = round((atan2(T6_3(1,2)/sin(Joint_5_angle_T),T6_3(0,2)/sin(Joint_5_angle_T)) + M_PI) * 10000) / 10000;
+        Joint_6_angle_T = round((atan2(T6_3(2,1)/sin(Joint_5_angle_T),-T6_3(2,0)/sin(Joint_5_angle_T)) + M_PI) * 10000) / 10000;
     }
 }
 

@@ -233,9 +233,9 @@ void Slave_Copmputer::Follow_Mobj(MPC_Control& mpc,Robot &robot,mobile_pose &mob
     mpc.Calculate_Out_J5(u_J5,robot,mobile);
     mpc.Calculate_Out_J6(u_J6,robot,mobile);
     robot.get_joint_speed_first();
-    robot.Get_Joint_Angle_first();
-    robot.get_joint_speed_second();
-    robot.Get_Joint_Angle_second();
+//    robot.Get_Joint_Angle_first();
+//    robot.get_joint_speed_second();
+//    robot.Get_Joint_Angle_second();
     if(robot.errror_position == 1) {
         serialPort->write(reinterpret_cast< const char *>(STOP));
     }

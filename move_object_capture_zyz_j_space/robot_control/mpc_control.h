@@ -16,9 +16,9 @@ class Robot;
 class Slave_Copmputer;
 class mobile_pose;
 /*limit*/
-#define LIMIT_DDDANGLE 888
-#define LIMIT_DDANGLE  888
-#define LIMIT_DANGLE   5
+#define LIMIT_DDDANGLE 5000
+#define LIMIT_DDANGLE  500
+#define LIMIT_DANGLE   10
 
 class MPC_Control
 {
